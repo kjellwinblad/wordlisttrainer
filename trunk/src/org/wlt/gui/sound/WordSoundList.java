@@ -42,7 +42,7 @@ public class WordSoundList extends JList{
 	}
 
 	public void selectNextItem() {
-		System.out.println("SLECT NEXT ITEM");
+
 		if(getSelectedIndex()== words.size()-1)
 			setSelectedIndex(0);
 		else
