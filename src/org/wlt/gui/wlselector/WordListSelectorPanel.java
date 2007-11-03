@@ -155,12 +155,16 @@ public class WordListSelectorPanel extends JPanel {
 		
 	}
 
-	private JTable getWordListTable() {
+	private WordListSelectorTable getWordListTable() {
 		
 		if(wordListTable == null)
 			wordListTable = new WordListSelectorTable();
 		
 		return wordListTable;
+	}
+
+	public void update() {
+		getWordListTable().updateData();
 	}
 	
 	

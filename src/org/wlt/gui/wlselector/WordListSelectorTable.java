@@ -3,6 +3,7 @@
  */
 package org.wlt.gui.wlselector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -51,7 +52,7 @@ public class WordListSelectorTable extends JTable {
                 "Language B",
                 "# of Items"};
         
-        private List<WordList> wordListList;
+        private List<WordList> wordListList = new LinkedList<WordList>();
 
         public int getColumnCount() {
             return columnNames.length;
