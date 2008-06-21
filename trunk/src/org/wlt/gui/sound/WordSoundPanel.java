@@ -103,7 +103,7 @@ public class WordSoundPanel extends JPanel {
 
 		recButton.addActionListener(new ActionListener(){
 
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				recordOrStopRecord();
 			}
@@ -122,7 +122,7 @@ public class WordSoundPanel extends JPanel {
 		
 		Player.addIsPlayinggListener(new IsPlayingListener(){
 
-			@Override
+
 			public void isPlaying(boolean recording) {
 				recButton.setEnabled(!recording);
 				playButton.setEnabled(!recording);				
@@ -174,7 +174,7 @@ public class WordSoundPanel extends JPanel {
 				} catch (final Exception e) {
 					SwingUtilities.invokeLater(new Runnable(){
 
-						@Override
+
 						public void run() {
 							JOptionPane.showMessageDialog(thisPanel, "Could not play sound", e.getMessage(), JOptionPane.ERROR_MESSAGE);
 

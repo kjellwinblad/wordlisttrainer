@@ -14,6 +14,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -165,6 +167,21 @@ public class WordListSelectorPanel extends JPanel {
 
 	public void update() {
 		getWordListTable().updateData();
+	}
+
+	public List<WordList> getSelected() {
+
+		List<WordList> selected = new LinkedList<WordList>();
+		
+		int[] selectedRows = wordListTable.getSelectedRows();
+		
+		for(int n : selectedRows){
+			WordList selectedWordList = wordListTable.getElementAtRow(n);
+		
+			selected.add(selectedWordList);
+		}
+		
+		return selected;
 	}
 	
 	

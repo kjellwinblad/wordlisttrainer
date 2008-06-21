@@ -6,60 +6,134 @@ import java.sql.SQLException;
 
 import org.wlt.settings.DatabaseSettings;
 
+import sun.security.pkcs11.Secmod.DbMode;
+
 public class DatabaseHelper {
 
+	public enum DatabaseMode { Local, Network}
+	
+	private static DatabaseMode dbMode = DatabaseMode.Local;
+	
 	private static String dbURL = 
 	"jdbc:derby://localhost:1527/DB;create=true;user=me;password=mine";
 	private static Connection conn = null;
 	
 	private static String driver;
+	private static String localDBURL;
+	private static String localDriver;
+	private static String networkDriver;
+	private static String networkDBURL;
+	private static Connection localConn;
+	private static Connection networkConn;
+	
 	
 	
 	public static void setDatabaseSettings(DatabaseSettings databaseSettings){
+		
+		shutdown();
+		setLocalConfig();
+		setNetworkConfig(databaseSettings);
+		
 		if(databaseSettings.isCurrentDatabaseModeLocal()){
-			System.out.println("LOCAL MODE");
-			dbURL =  "jdbc:derby:" + "DB" + ";create=true";
-			driver = "org.apache.derby.jdbc.EmbeddedDriver";
+			dbURL =  localDBURL;
+			driver = localDBURL;
+			dbMode = DatabaseMode.Local;
 		}else{
-			System.out.println("NETWORK MODE");
-			driver = "org.apache.derby.jdbc.ClientDriver";
-			dbURL = "jdbc:derby://" +
-			databaseSettings.getNetworkDatabaseSettings().getHost() +
-			":" +
-			databaseSettings.getNetworkDatabaseSettings().getPortNumber() +
-			"/DB;create=true;user=" +
-			databaseSettings.getNetworkDatabaseSettings().getUserName() +
-			";password=" +
-			databaseSettings.getNetworkDatabaseSettings().getPassword();
-			System.out.println(dbURL);
+			dbURL =  networkDBURL;
+			driver = networkDBURL;
+			dbMode = DatabaseMode.Network;
 		}
-		System.out.println(dbURL);
+		
 	}
 	
-    public static Connection createConnection()
+    private static void setNetworkConfig(DatabaseSettings databaseSettings) {
+		networkDriver = "org.apache.derby.jdbc.ClientDriver";
+		networkDBURL = "jdbc:derby://" +
+		databaseSettings.getNetworkDatabaseSettings().getHost() +
+		":" +
+		databaseSettings.getNetworkDatabaseSettings().getPortNumber() +
+		"/" + 
+		databaseSettings.getNetworkDatabaseSettings().getDatabaseName() + 
+		";create=true;user=" +
+		databaseSettings.getNetworkDatabaseSettings().getUserName() +
+		";password=" +
+		databaseSettings.getNetworkDatabaseSettings().getPassword();
+		
+	}
+
+	private static void setLocalConfig() {
+    	localDBURL =  "jdbc:derby:LocalDB;create=true";
+		localDriver = "org.apache.derby.jdbc.EmbeddedDriver";
+	}
+
+	public static Connection createConnection()
     throws Exception{
-    	if(conn == null){
-    	
+		
+    	if(dbMode == DatabaseMode.Local)
+    		return createLocalConnection();
+    	else
+    		return createNetworkConnection();
+    
+	}
+
+	public static Connection createLocalConnection()
+    throws Exception{
+	    	if(localConn == null){
+	    		localConn = createConnection(localDBURL, localDriver);
+	    		return localConn;
+	    	}else
+	    		return localConn;
+    }
+	
+	public static Connection createNetworkConnection()
+    throws Exception{
+	    	if(networkConn == null){
+	    		networkConn = createConnection(networkDBURL, networkDriver);
+	    		return networkConn;
+	    	}else
+	    		return networkConn;
+    }
+	
+	public static Connection createConnection(String dbURL, String driver)
+    throws Exception{
+
         try
         {
-        	System.out.println(driver);
+
             Class.forName(driver).newInstance();
-            //Get a connection
-            conn = DriverManager.getConnection(dbURL); 
-            return conn;
+
+            return DriverManager.getConnection(dbURL); 
         }
         catch (Exception except)
         {
             except.printStackTrace();
             throw except;
         }
-        
-    	}else
-    		return conn;
+
     }
     
     
     public static void shutdown()
+    {
+    	shutdownConnection(conn);
+    	conn = null;
+
+    }
+    
+    public static void shutdownNetwork()
+    {
+    	shutdownConnection(networkConn);
+    	networkConn = null;
+    }
+    
+    public static void shutdownLocal()
+    {
+       shutdownConnection(localConn);
+       localConn = null;
+
+    }
+    
+    public static void shutdownConnection(Connection conn)
     {
         try
         {
@@ -68,12 +142,19 @@ public class DatabaseHelper {
             {
                 conn.close();
                 conn = null;
-            }           
+            }         
         }
         catch (SQLException sqlExcept)
         {
             sqlExcept.printStackTrace();
         }
-
     }
+
+	public static DatabaseMode getDbMode() {
+		return dbMode;
+	}
+
+	public static void setDbMode(DatabaseMode dbMode) {
+		DatabaseHelper.dbMode = dbMode;
+	}
 }

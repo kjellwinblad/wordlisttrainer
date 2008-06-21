@@ -2,11 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.derby.core_10.3.1/derby.jar"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.derby.core_10.3.1/derbyclient.jar"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.derby.core_10.3.1/derbytools.jar"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.derby.core_10.3.1/derbynet.jar"/>
 	<classpathentry kind="lib" path="lib/formsrt.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.2.1.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.derby.core_10.3.1/derby.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.derby.core_10.3.1/derbyclient.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.derby.core_10.3.1/derbynet.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.derby.core_10.3.1/derbyrun.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.derby.core_10.3.1/derbytools.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

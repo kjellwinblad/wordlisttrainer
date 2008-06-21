@@ -113,7 +113,8 @@ public class WordBinding implements WLTDatabaseStorable{
 			String sql = "update WORD_LIST_WORDS set "+
 				"word_list_id=?," +
 				"wordAID=?," +
-				"wordBID=?" +
+				"wordBID=?," +
+				"dbVersion=?" +
 				" where id=?";
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -132,7 +133,8 @@ public class WordBinding implements WLTDatabaseStorable{
 			stmt.setInt(1, wordList.getDatabaseID());
 			stmt.setInt(2, wordA.getDatabaseID());
 			stmt.setInt(3, wordB.getDatabaseID());
-			stmt.setInt(4, databaseID);
+			stmt.setInt(4, 0);
+			stmt.setInt(5, databaseID);
 			
 			stmt.executeUpdate();
 			
@@ -144,6 +146,16 @@ public class WordBinding implements WLTDatabaseStorable{
 		
 			loadFromDatabase(databaseID);
 			
+		}
+
+		public void deAttachFromDatabase() {
+			databaseID = -1;
+			
+			if(wordA!=null)
+				wordA.deAttachFromDatabase();
+			
+			if(wordB!=null)
+				wordB.deAttachFromDatabase();
 		}
 	
 }

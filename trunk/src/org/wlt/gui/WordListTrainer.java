@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -18,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 
+import org.wlt.data.WordList;
+import org.wlt.data.database.DatabaseCopier;
 import org.wlt.data.database.DatabaseHelper;
 import org.wlt.gui.dbconf.DatabaseSettingsDialog;
 import org.wlt.gui.wlselector.WordListSelectorPanel;
@@ -79,8 +82,7 @@ public class WordListTrainer extends JFrame {
 			JMenuItem remoteDatabaseSettings = new JMenuItem("Database settings...");
 			databaseMenu.add(remoteDatabaseSettings);
 			remoteDatabaseSettings.addActionListener(new ActionListener(){
-
-				@Override
+ 
 				public void actionPerformed(ActionEvent e) {
 					new DatabaseSettingsDialog(thisFrame).setVisible(true);
 					
@@ -104,11 +106,40 @@ public class WordListTrainer extends JFrame {
 //			
 //			databaseMenu.add(new JSeparator());
 			
-			JMenuItem copyLocal = new JMenuItem("Copy local to network...");
-			databaseMenu.add(copyLocal);
+			JMenuItem copyLocal = new JMenuItem("Copy Selected to Network/Local DB");
 			
-			JMenuItem copyNetwork = new JMenuItem("Copy network to local...");
-			databaseMenu.add(copyNetwork);
+			copyLocal.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					
+					DatabaseCopier copier = null;
+					
+					if (DatabaseHelper.getDbMode() == DatabaseHelper.DatabaseMode.Network){
+						copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Network,
+								DatabaseHelper.DatabaseMode.Local);
+					}else{
+						copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Local,
+								DatabaseHelper.DatabaseMode.Network);						
+					}
+					
+					List<WordList> selectedWordLists = wordListSelectorPanel.getSelected();
+					
+					try {
+						copier.startCoping(selectedWordLists);
+						
+						wordListSelectorPanel.update();
+						thisFrame.repaint();
+						
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(thisFrame, "Error when trying to copy: " + e1.getMessage());
+						e1.printStackTrace();
+					}
+					
+				}
+				
+			});
+			
+			databaseMenu.add(copyLocal);
 		}
 		
 		return mainMenu;

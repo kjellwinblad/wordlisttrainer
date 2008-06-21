@@ -1,4 +1,6 @@
-connect 'jdbc:derby://localhost:1527/DB;create=true;user=me;password=mine';
+connect 'jdbc:derby:LocalDB;create=true';
+
+connect 'jdbc:derby://localhost:1527/NetworkDB;create=true;user=me;password=mine';
 
 DROP TABLE WORDS;
 
@@ -11,6 +13,7 @@ CREATE TABLE WORD_LIST_WORDS (
   word_list_id INTEGER,
   wordAID INTEGER,
   wordBID INTEGER,
+  dbVersion INTEGER,
 PRIMARY KEY(id));
 
 
@@ -19,6 +22,7 @@ CREATE TABLE WORD_LISTS (
   word_list_name CLOB,
   languageA CLOB,
   languageB CLOB,
+  dbVersion INTEGER,
   PRIMARY KEY(id));
 
 
@@ -30,6 +34,7 @@ CREATE TABLE WORDS (
   language CLOB,
   wordcomment CLOB,
   sound BLOB,
+  dbVersion INTEGER,
 PRIMARY KEY(id));
 
 

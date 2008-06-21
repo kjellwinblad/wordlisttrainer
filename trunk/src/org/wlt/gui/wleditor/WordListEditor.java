@@ -84,24 +84,31 @@ public class WordListEditor extends JDialog {
 			wordListNameTextField = propertiesPanel.getTextField ("wordListName" );     
 		    wordListNameTextField.setText(wordList.getWordListName());
 		    wordListNameTextField.addKeyListener(new KeyAdapter(){
-				public void keyPressed(KeyEvent e) {
-					wordList.setWordListName(wordListNameTextField.getText());
+				
+		    	@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+		    		wordList.setWordListName(wordListNameTextField.getText());
 				}
+
 		    });
 		    
 		    
 		    languageATextField = propertiesPanel.getTextField("languageA");
 		    languageATextField.setText(wordList.getLanguageA());
 		    languageATextField.addKeyListener(new KeyAdapter(){
-				public void keyPressed(KeyEvent e) {
+		    	@Override
+				public void keyReleased(KeyEvent e) {
 					wordList.setLanguageA(languageATextField.getText());
+					
 				}
 		    });
 		    
 		    languageBTextField = propertiesPanel.getTextField("languageB");
 		    languageBTextField.setText(wordList.getLanguageB());
 		    languageBTextField.addKeyListener(new KeyAdapter(){
-				public void keyPressed(KeyEvent e) {
+		    	@Override
+				public void keyReleased(KeyEvent e) {
 					wordList.setLanguageB(languageBTextField.getText());
 				}
 		    });

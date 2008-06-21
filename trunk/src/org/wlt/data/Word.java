@@ -38,7 +38,8 @@ public class Word implements WLTDatabaseStorable {
 			"word=?," +
 			"language=?," +
 			"wordcomment=?," +
-			"sound=?" +
+			"sound=?," +
+			"dbVersion=?" +
 			" where id=?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -47,7 +48,8 @@ public class Word implements WLTDatabaseStorable {
 		stmt.setString(2, language);
 		stmt.setString(3, comment);
 		stmt.setBytes(4, soundFile);
-		stmt.setInt(5, databaseID);
+		stmt.setInt(5, 0);
+		stmt.setInt(6, databaseID);
 		stmt.executeUpdate();
 
 		stmt.close();
@@ -162,6 +164,11 @@ public class Word implements WLTDatabaseStorable {
 	public String toString() {
 		
 		return word;
+	}
+
+	public void deAttachFromDatabase() {
+		databaseID = -1;
+		
 	}
 
 	

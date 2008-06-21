@@ -47,32 +47,32 @@ public class WordListEditorTable extends JTable {
 		setCellSelectionEnabled(true);
 		getColumnModel().addColumnModelListener(new TableColumnModelListener(){
 
-			@Override
+
 			public void columnMoved(TableColumnModelEvent e) {
 				
 				langAFirst = !getColumnModel().getColumn(0).getHeaderValue().equals("Language B");
 				
 			}
 
-			@Override
+
 			public void columnAdded(TableColumnModelEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
+
 			public void columnMarginChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
+
 			public void columnRemoved(TableColumnModelEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 
-			@Override
+
 			public void columnSelectionChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
 				
