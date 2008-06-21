@@ -4,6 +4,7 @@
 package org.wlt.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -112,28 +113,67 @@ public class WordListTrainer extends JFrame {
 
 				public void actionPerformed(ActionEvent e) {
 					
-					DatabaseCopier copier = null;
+					final String infoText;
 					
-					if (DatabaseHelper.getDbMode() == DatabaseHelper.DatabaseMode.Network){
-						copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Network,
-								DatabaseHelper.DatabaseMode.Local);
-					}else{
-						copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Local,
-								DatabaseHelper.DatabaseMode.Network);						
-					}
 					
-					List<WordList> selectedWordLists = wordListSelectorPanel.getSelected();
 					
-					try {
-						copier.startCoping(selectedWordLists);
+					if (DatabaseHelper.getDbMode() == DatabaseHelper.DatabaseMode.Network)
+						infoText = "Copying from network database to local database...";
+					else
+						infoText = "Copying from local database to network database...";
+
 						
-						wordListSelectorPanel.update();
-						thisFrame.repaint();
+					CancelAbleProcess copyProcess = new CancelAbleProcess(){
+
+						private StatusNotifier notifer = null;
 						
-					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(thisFrame, "Error when trying to copy: " + e1.getMessage());
-						e1.printStackTrace();
-					}
+						public void setStatusNotifier(StatusNotifier n) {
+
+							notifer = n;
+						}
+
+						public void run() {
+							
+							DatabaseCopier copier = null;
+							
+								
+							if (DatabaseHelper.getDbMode() == DatabaseHelper.DatabaseMode.Network){
+								copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Network,
+										DatabaseHelper.DatabaseMode.Local, notifer);
+								
+								notifer.setStatusMessage(infoText);
+							
+							}else{
+							
+								copier = new DatabaseCopier(DatabaseHelper.DatabaseMode.Local,
+										DatabaseHelper.DatabaseMode.Network, notifer);
+															
+								notifer.setStatusMessage(infoText);
+							
+							}
+							
+							List<WordList> selectedWordLists = wordListSelectorPanel.getSelected();
+							
+							try {
+								copier.startCoping(selectedWordLists);
+								
+								wordListSelectorPanel.update();
+								thisFrame.repaint();
+								
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(thisFrame, "Error when trying to copy: " + e1.getMessage());
+								e1.printStackTrace();
+							}
+							
+						}
+						
+					};
+
+					
+					CancelAbleProcessDialog dialog = new CancelAbleProcessDialog(thisFrame,
+							copyProcess, infoText);
+					
+					dialog.setVisible(true);
 					
 				}
 				
