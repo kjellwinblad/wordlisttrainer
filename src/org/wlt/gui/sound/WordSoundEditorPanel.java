@@ -52,7 +52,7 @@ public class WordSoundEditorPanel extends JPanel{
 
 		wordSoundList.addListSelectionListener(new ListSelectionListener(){
 
-			@Override
+			
 			public void valueChanged(ListSelectionEvent e) {
 				try{
 					wordSoundPanel.setWord(words.get(wordSoundList.getSelectedIndex()));
@@ -111,7 +111,7 @@ public class WordSoundEditorPanel extends JPanel{
 			playListButton.setText("Stop Playing Word List");
 		new Thread(new Runnable(){
 			
-			@Override
+
 			public void run() {
 				for(Word word :words){
 					final Word w = word;

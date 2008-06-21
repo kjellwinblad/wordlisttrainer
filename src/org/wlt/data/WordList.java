@@ -25,8 +25,12 @@ public class WordList implements WLTDatabaseStorable {
 		// TODO Auto-generated method stub
 		Connection conn = DatabaseHelper.createConnection();
 
-		String sql = "update WORD_LISTS set " + "word_list_name=?," + "languageA=?,"
-				+ "languageB=?" + " where id=?";
+		String sql = "update WORD_LISTS set " 
+			+ "word_list_name=?," 
+			+ "languageA=?,"
+				+ "languageB=?," 
+				+ "dbVersion=?" 
+				+ " where id=?";
 
 		PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -34,7 +38,8 @@ public class WordList implements WLTDatabaseStorable {
 		stmt.setString(1, wordListName);
 		stmt.setString(2, languageA);
 		stmt.setString(3, languageB);
-		stmt.setInt(4, databaseID);
+		stmt.setInt(4, 0);
+		stmt.setInt(5, databaseID);
 		stmt.executeUpdate();
 
 		stmt.close();
@@ -76,7 +81,7 @@ public class WordList implements WLTDatabaseStorable {
 
 		PreparedStatement stmt = conn.prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
-//		stmt.setString(1, "WORD_LISTS");
+
 
 
 		stmt.executeUpdate();
@@ -155,6 +160,9 @@ public class WordList implements WLTDatabaseStorable {
 		this.languageA = languageA.substring(0, 1).toUpperCase()
 				+ languageA.substring(1, languageA.length()).toLowerCase();
 		else this.languageA = languageA;
+		
+		for(WordBinding a : wordBindings)
+			a.getWordA().setLanguage(this.languageA);
 	}
 
 	public String getLanguageB() {
@@ -165,7 +173,10 @@ public class WordList implements WLTDatabaseStorable {
 		if(languageB.length()>1)
 		this.languageB = languageB.substring(0, 1).toUpperCase()
 				+ languageB.substring(1, languageB.length()).toLowerCase();
-		else this.languageB = languageB; 
+		else this.languageB = languageB;
+		
+		for(WordBinding b : wordBindings)
+			b.getWordB().setLanguage(this.languageB);
 	}
 
 	public void removeFromDatabase() throws Exception {
@@ -212,6 +223,14 @@ public class WordList implements WLTDatabaseStorable {
 
 	public List<WordBinding> getWordBindings() {
 		return wordBindings;
+	}
+
+	public void deAttachFromDatabase() {
+		databaseID = -1;
+		
+		for (WordBinding b : wordBindings)
+			b.deAttachFromDatabase();
+		
 	}
 
 }

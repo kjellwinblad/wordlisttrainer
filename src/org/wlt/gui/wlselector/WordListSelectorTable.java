@@ -39,6 +39,7 @@ public class WordListSelectorTable extends JTable {
 	
 	public void updateData(){
 		tableModel.update();
+		repaint();
 	}
 	
 	public WordList getElementAtRow(int row){

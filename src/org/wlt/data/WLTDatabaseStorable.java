@@ -22,4 +22,6 @@ public interface WLTDatabaseStorable {
 	
 	public int getDatabaseID();
 	
+	public void deAttachFromDatabase();
+	
 }

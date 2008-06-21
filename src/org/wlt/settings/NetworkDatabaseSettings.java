@@ -4,7 +4,7 @@ public class NetworkDatabaseSettings {
 
 	String host = "localhost";
 	long portNumber = 1527;
-	String databaseName = "DB"; 
+	String databaseName = "NetworkDB"; 
 	
 	
 	String userName = "me";
