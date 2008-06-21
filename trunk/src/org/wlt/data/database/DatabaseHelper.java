@@ -30,7 +30,25 @@ public class DatabaseHelper {
 	
 	public static void setDatabaseSettings(DatabaseSettings databaseSettings){
 		
-		shutdown();
+		
+		try {
+			shutdown();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		try {
+			shutdownLocal();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
+			shutdownNetwork();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		setLocalConfig();
 		setNetworkConfig(databaseSettings);
 		

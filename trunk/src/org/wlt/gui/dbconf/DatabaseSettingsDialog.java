@@ -65,7 +65,7 @@ public class DatabaseSettingsDialog extends JDialog {
 			JButton tryConnectButton = new JButton("Try to connect...");
 			tryConnectButton.addActionListener(new ActionListener() {
 
-				@Override
+
 				public void actionPerformed(ActionEvent e) {
 					tryConnect();
 
@@ -78,7 +78,6 @@ public class DatabaseSettingsDialog extends JDialog {
 			JButton connectAndCloseButton = new JButton("Connect and Close");
 			connectAndCloseButton.addActionListener(new ActionListener(){
 
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					connectAndClose();
 					
@@ -91,23 +90,43 @@ public class DatabaseSettingsDialog extends JDialog {
 	}
 
 	private void connectAndClose() {
-		tryConnect();
+		connect();
 		owner.setEnabled(true);
 		owner.update();
 		setVisible(false);		
 	}
 
+	private void connect(){
+	
+	try{
+		connectWihoutErrorHandling();
+		
+	} catch (Exception e) {
+		JOptionPane.showMessageDialog(this, e.getMessage(),
+				"Could not connect", JOptionPane.ERROR_MESSAGE);
+		e.printStackTrace();
+	}
+		
+	}
+	
+	private void connectWihoutErrorHandling() throws Exception{
+		
+		DatabaseSettings dbs = getSettingsFromGUI();
+		
+		if(dbs==null)
+			return;
+		
+		DatabaseHelper.setDatabaseSettings(dbs);
+
+		DatabaseHelper.createConnection();		
+	}
+	
 	private void tryConnect() {
 		try {
-
-			DatabaseSettings dbs = getSettingsFromGUI();
-			if(dbs==null)
-				return;
 			
-			DatabaseHelper.setDatabaseSettings(dbs);
+			connectWihoutErrorHandling();
 
-			DatabaseHelper.createConnection();
-			System.out.println("CONN SUCCESFUL");
+			JOptionPane.showMessageDialog(this, "Connected successfully!");
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(),
@@ -150,7 +169,6 @@ public class DatabaseSettingsDialog extends JDialog {
 					.isCurrentDatabaseModeLocal());
 			useNetworkDatabaseCheckbox.addActionListener(new ActionListener() {
 
-				@Override
 				public void actionPerformed(ActionEvent e) {
 					setNetworkDatabaseMode(useNetworkDatabaseCheckbox
 							.isSelected());
