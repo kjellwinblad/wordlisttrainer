@@ -95,16 +95,31 @@ public class Player {
 
 	private static List<IsPlayingListener> isPlayingListeners = new LinkedList<IsPlayingListener>();
 
+//<<<<<<< .mine
 	static {
-		float sampleRate = 8000;
-		int sampleSizeInBits = 8;
+		float sampleRate = 16000;
+		int sampleSizeInBits = 16;
 		int channels = 1;
 		boolean signed = true;
 		boolean bigEndian = true;
-		AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
-				44100.0F, 16, 2, 4, 44100.0F, false);// new
-														// AudioFormat(sampleRate,
-		// sampleSizeInBits, channels, signed, bigEndian);
+		//AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+		//		44100.0F, 16, 2, 4, 44100.0F, false);
+		//AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+		//		8000.0F, 16, 2, 4, 8000.0F, false);
+		AUDIO_FORMAT = new AudioFormat(sampleRate,
+		 sampleSizeInBits, channels, signed, bigEndian);
+//=======
+//	static {
+//		float sampleRate = 8000;
+//		int sampleSizeInBits = 8;
+//		int channels = 1;
+//		boolean signed = true;
+//		boolean bigEndian = true;
+//		AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+//				44100.0F, 16, 2, 4, 44100.0F, false);// new
+//														// AudioFormat(sampleRate,
+//		// sampleSizeInBits, channels, signed, bigEndian);
+//>>>>>>> .r8
 
 	}
 
