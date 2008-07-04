@@ -1,9 +1,5 @@
 #summary This page contains screen shots of the program.
 
-= Screen Shots =
-
-Here are some screen shots from the program in action.
-
 == Word Lists ==
 
 http://wordlisttrainer.googlecode.com/svn/trunk/screenshots/word_lists.jpg
