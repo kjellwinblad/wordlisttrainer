@@ -1,0 +1,10 @@
+#summary This page contains screen shots of the program.
+
+= Screen Shots =
+
+
+== Word Lists ==
+
+== Word List Editor ==
+
+== Sound Editor ==
