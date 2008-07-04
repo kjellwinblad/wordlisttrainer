@@ -92,9 +92,19 @@ if(isRecording()==false)
 	public byte[] stopRecordingIN() throws Exception {
 		byte sound[];
 		try {
+			
+			System.out.println("START STOP");
+			long time = System.currentTimeMillis();
+			
 			m_line.stop();
+			
+			System.out.println("STOP STOP");
+			
 			m_line.close();
+			System.out.println(System.currentTimeMillis() - time);
+			setRecording(false);
 			externalTrigger = false;
+
 			
 System.out.println("stop");
 			if (e != null)
@@ -114,7 +124,7 @@ System.out.println("stop");
 			throw e;
 
 		}
-		setRecording(false);
+		
 		return sound;
 
 	}

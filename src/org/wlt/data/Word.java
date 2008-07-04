@@ -38,18 +38,33 @@ public class Word implements WLTDatabaseStorable {
 			"word=?," +
 			"language=?," +
 			"wordcomment=?," +
-			"sound=?," +
+			(soundFile != null ? "sound=?," : "") +
 			"dbVersion=?" +
 			" where id=?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 
-		stmt.setString(1, word);
-		stmt.setString(2, language);
-		stmt.setString(3, comment);
-		stmt.setBytes(4, soundFile);
-		stmt.setInt(5, 0);
-		stmt.setInt(6, databaseID);
+		int i = 0;
+		i++;
+		stmt.setString(i, word);
+		i++;
+		stmt.setString(i, language);
+		i++;
+		stmt.setString(i, comment);
+		
+		if(soundFile != null){
+			
+			System.out.println("SOUND FILE NOT NULL WHEN SAVING NEW");
+			i++;
+			stmt.setBytes(i, soundFile);
+			soundFile = null;
+		}
+		
+		i++;
+		stmt.setInt(i, 0);
+		i++;
+		stmt.setInt(i, databaseID);
+		
 		stmt.executeUpdate();
 
 		stmt.close();
@@ -64,8 +79,11 @@ public class Word implements WLTDatabaseStorable {
 	}
 	
 	public void createNewInDatabase() throws Exception{
+		
 		Connection conn = DatabaseHelper.createConnection();
+		
 		System.out.println("new");
+		
 		String sql = "insert into WORDS(word) values(NULL)";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -73,6 +91,7 @@ public class Word implements WLTDatabaseStorable {
 		stmt.executeUpdate();
 		
 		ResultSet rs = stmt.getGeneratedKeys();
+		
 		if(rs.next())
 			databaseID = rs.getInt(1);
 		
@@ -100,7 +119,7 @@ public class Word implements WLTDatabaseStorable {
 		
 		this.comment = result.getString("wordcomment");
 		
-		soundFile = result.getBytes("sound");
+		//soundFile = result.getBytes("sound");
 
 		}
 		
@@ -120,14 +139,58 @@ public class Word implements WLTDatabaseStorable {
 
 
 
-	public byte[] getSoundFile() {
-		return soundFile;
+	public byte[] getSoundFile() throws Exception{
+		
+		if(databaseID == -1)
+			return soundFile;
+		else{
+			//Load from database
+			
+			Connection conn = DatabaseHelper.createConnection();
+			
+			Statement stmt = conn.createStatement();
+			
+			ResultSet result = stmt.executeQuery("select * from WORDS where id=" + databaseID);
+			
+			byte[] sound = null;
+		
+			if(result.next()){
+		System.out.println("Result");
+				sound = result.getBytes("sound");
+System.out.println(sound!=null ?sound.length: "sound ar null");
+			}
+			
+			stmt.close();
+			
+			return sound;
+			
+		}
 	}
 
 
 
-	public void setSoundFile(byte[] soundFile) {
-		this.soundFile = soundFile;
+	public void setSoundFile(byte[] soundFile) throws Exception{
+		if(databaseID == -1)
+			this.soundFile = soundFile;
+		else{
+			//Save to database
+			
+			Connection conn = DatabaseHelper.createConnection();
+
+			String sql = "update WORDS set "+
+				 "sound=?" +
+				" where id=?";
+			
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			
+			stmt.setBytes(1, soundFile);
+			
+			stmt.setInt(2, databaseID);
+			
+			stmt.executeUpdate();
+
+			stmt.close();
+		}
 	}
 
 
@@ -166,7 +229,10 @@ public class Word implements WLTDatabaseStorable {
 		return word;
 	}
 
-	public void deAttachFromDatabase() {
+	public void deAttachFromDatabase() throws Exception{
+		System.out.println("WORD DEATACH");
+		soundFile = getSoundFile();
+		System.out.println("DEATATCH GET SO " + soundFile == null);
 		databaseID = -1;
 		
 	}

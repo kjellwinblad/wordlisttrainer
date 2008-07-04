@@ -148,9 +148,9 @@ public class WordBinding implements WLTDatabaseStorable{
 			
 		}
 
-		public void deAttachFromDatabase() {
+		public void deAttachFromDatabase() throws Exception{
 			databaseID = -1;
-			
+			System.out.println("WORD BINDING DEATACH");
 			if(wordA!=null)
 				wordA.deAttachFromDatabase();
 			
