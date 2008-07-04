@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import org.wlt.data.Word;
 import org.wlt.data.WordBinding;
 import org.wlt.data.WordList;
+import org.wlt.gui.export.ExportDialog;
 import org.wlt.gui.sound.WordSoundEditor;
 
 /**
@@ -70,7 +71,7 @@ public class WordListEditorTablePanel extends JPanel {
 			controlPanel.add(addButton);
 
 			JButton openInRecorEditorButton = new JButton(
-					"Open selected in sound editor");
+					"Open Selected In Sound Editor");
 
 			openInRecorEditorButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -79,6 +80,17 @@ public class WordListEditorTablePanel extends JPanel {
 			});
 
 			controlPanel.add(openInRecorEditorButton);
+
+			JButton exportWordListButton = new JButton(
+					"Export Selected");
+
+			exportWordListButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					exportWordList();
+				}
+			});
+
+			controlPanel.add(exportWordListButton);
 
 			JButton deleteButton = new JButton("Delete Selected Item(s)");
 
@@ -95,6 +107,14 @@ public class WordListEditorTablePanel extends JPanel {
 	}
 
 	protected void openSelectedInSoundEditor() {
+
+		List<Word> words = getSelectedWords();
+
+		new WordSoundEditor(words).setVisible(true);
+	}
+
+	private List<Word> getSelectedWords() {
+		
 		int cols[] = wordListEditorTable.getSelectedColumns();
 		int rows[] = wordListEditorTable.getSelectedRows();
 
@@ -108,8 +128,8 @@ public class WordListEditorTablePanel extends JPanel {
 		for (int row : rows)
 			for (int col : cols)
 				words.add(wordListEditorTable.getWordAt(col, row));
-
-		new WordSoundEditor(words).setVisible(true);
+		
+		return words;
 	}
 
 	private void addWordBinding() {
@@ -158,6 +178,11 @@ public class WordListEditorTablePanel extends JPanel {
 		wordListEditorTable.updateData();
 		wordListEditorTable.repaint();
 
+	}
+	
+	private void exportWordList() {
+		new ExportDialog(getSelectedWords(), this).setVisible(true);
+		
 	}
 
 }

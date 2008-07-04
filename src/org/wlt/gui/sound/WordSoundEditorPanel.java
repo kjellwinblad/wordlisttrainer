@@ -83,16 +83,6 @@ public class WordSoundEditorPanel extends JPanel{
 
 			controlPanel.add(playListButton);
 
-			JButton exportWordListButton = new JButton(
-					"Export Word List...");
-
-			exportWordListButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					exportWordList();
-				}
-			});
-
-			controlPanel.add(exportWordListButton);
 		}
 
 		return controlPanel;

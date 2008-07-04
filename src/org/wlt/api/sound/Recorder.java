@@ -156,21 +156,21 @@ public void run() {
 		setRecording(true);
 		try {
 
-		    float sampleRate = 8000;
-		    int sampleSizeInBits = 8;
-		    int channels = 1;
-		    boolean signed = true;
-		    boolean bigEndian = true;
-		    AudioFormat format =  new AudioFormat(sampleRate, 
-		      sampleSizeInBits, channels, signed, bigEndian);
+//		    float sampleRate = 8000;
+//		    int sampleSizeInBits = 8;
+//		    int channels = 1;
+//		    boolean signed = true;
+//		    boolean bigEndian = true;
+//		    AudioFormat format =  new AudioFormat(sampleRate, 
+//		      sampleSizeInBits, channels, signed, bigEndian);
 		    
 		    DataLine.Info info = new DataLine.Info(
-		    	    TargetDataLine.class, format);
+		    	    TargetDataLine.class, Player.AUDIO_FORMAT);
 		    	  TargetDataLine line = (TargetDataLine)
 		    	    AudioSystem.getLine(info);
 
 		    	  line.open();
-			recorder = new Recorder(line, format);
+			recorder = new Recorder(line, Player.AUDIO_FORMAT);
 			
 			
 			

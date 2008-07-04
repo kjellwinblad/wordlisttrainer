@@ -33,8 +33,8 @@
  */
 
 /*
-|<---            this code is formatted to fit into 80 columns             --->|
-*/
+ |<---            this code is formatted to fit into 80 columns             --->|
+ */
 
 package org.wlt.api.sound;
 
@@ -57,54 +57,57 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+/**
+ * <titleabbrev>SimpleAudioPlayer</titleabbrev> <title>Playing an audio file
+ * (easy)</title>
+ * 
+ * <formalpara><title>Purpose</title> <para>Plays a single audio file.</para></formalpara>
+ * 
+ * <formalpara><title>Usage</title> <cmdsynopsis> <command>java
+ * SimpleAudioPlayer</command> <replaceable class="parameter">audiofile</replaceable>
+ * </cmdsynopsis> </formalpara>
+ * 
+ * <formalpara><title>Parameters</title> <variablelist> <varlistentry> <term><option><replaceable
+ * class="parameter">audiofile</replaceable></option></term> <listitem><para>the
+ * name of the audio file that should be played</para></listitem>
+ * </varlistentry> </variablelist> </formalpara>
+ * 
+ * <formalpara><title>Bugs, limitations</title>
+ * 
+ * <para>Only PCM encoded files are supported. A-law, &mu;-law, ADPCM, ogg
+ * vorbis, mp3 and other compressed data formats are not supported. For playing
+ * these, see <olink targetdoc="AudioPlayer" targetptr="AudioPlayer">AudioPlayer</olink>.</para>
+ * 
+ * </formalpara>
+ * 
+ * <formalpara><title>Source code</title> <para> <ulink
+ * url="SimpleAudioPlayer.java.html">SimpleAudioPlayer.java</ulink> </para>
+ * </formalpara>
+ * 
+ */
+public class Player {
 
-/**	<titleabbrev>SimpleAudioPlayer</titleabbrev>
-	<title>Playing an audio file (easy)</title>
+	public static final AudioFormat AUDIO_FORMAT;
 
-	<formalpara><title>Purpose</title>
-	<para>Plays a single audio file.</para></formalpara>
-
-	<formalpara><title>Usage</title>
-	<cmdsynopsis>
-	<command>java SimpleAudioPlayer</command>
-	<replaceable class="parameter">audiofile</replaceable>
-	</cmdsynopsis>
-	</formalpara>
-
-	<formalpara><title>Parameters</title>
-	<variablelist>
-	<varlistentry>
-	<term><option><replaceable class="parameter">audiofile</replaceable></option></term>
-	<listitem><para>the name of the
-	audio file that should be played</para></listitem>
-	</varlistentry>
-	</variablelist>
-	</formalpara>
-
-	<formalpara><title>Bugs, limitations</title>
-
-	<para>Only PCM encoded files are supported. A-law, &mu;-law,
-	ADPCM, ogg vorbis, mp3 and other compressed data formats are not
-	supported. For playing these, see <olink targetdoc="AudioPlayer"
-	targetptr="AudioPlayer">AudioPlayer</olink>.</para>
-
-	</formalpara>
-		
-	<formalpara><title>Source code</title>
-	<para>
-	<ulink url="SimpleAudioPlayer.java.html">SimpleAudioPlayer.java</ulink>
-	</para>
-	</formalpara>
-
-*/
-public class Player
-{
 	private static final int EXTERNAL_BUFFER_SIZE = 128000;
-	
+
 	private static boolean playing;
-	
+
 	private static List<IsPlayingListener> isPlayingListeners = new LinkedList<IsPlayingListener>();
-	
+
+	static {
+		float sampleRate = 8000;
+		int sampleSizeInBits = 8;
+		int channels = 1;
+		boolean signed = true;
+		boolean bigEndian = true;
+		AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+				44100.0F, 16, 2, 4, 44100.0F, false);// new
+														// AudioFormat(sampleRate,
+		// sampleSizeInBits, channels, signed, bigEndian);
+
+	}
+
 	public static void addIsPlayinggListener(IsPlayingListener l) {
 		isPlayingListeners.add(l);
 
@@ -115,47 +118,45 @@ public class Player
 
 	}
 
-	public static synchronized void play(byte [] sound) throws Exception
-	{System.out.println("play");
+	public static synchronized void play(byte[] sound) throws Exception {
+		System.out.println("play");
 		setPlaying(true);
-	    float sampleRate = 8000;
-	    int sampleSizeInBits = 8;
-	    int channels = 1;
-	    boolean signed = true;
-	    boolean bigEndian = true;
-	    AudioFormat format =  new AudioFormat(sampleRate, 
-	      sampleSizeInBits, channels, signed, bigEndian);
-	    
-	    InputStream input = new ByteArrayInputStream(sound);
-	    AudioInputStream ais = new AudioInputStream(input, 
-	      format, sound.length / format.getFrameSize());
-	    
-	    DataLine.Info info = new DataLine.Info(
-                SourceDataLine.class, format);
-SourceDataLine line = 
-    (SourceDataLine)AudioSystem.getLine(info);
+		// float sampleRate = 8000;
+		// int sampleSizeInBits = 8;
+		// int channels = 1;
+		// boolean signed = true;
+		// boolean bigEndian = true;
+		// AudioFormat format = new AudioFormat(sampleRate,
+		// sampleSizeInBits, channels, signed, bigEndian);
 
-line.open(format);
-line.start();
+		InputStream input = new ByteArrayInputStream(sound);
+		AudioInputStream ais = new AudioInputStream(input, AUDIO_FORMAT,
+				sound.length / AUDIO_FORMAT.getFrameSize());
 
-int bufferSize = (int) format.getSampleRate() 
-* format.getFrameSize();
-byte buffer[] = new byte[bufferSize];
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class,
+				AUDIO_FORMAT);
+		SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 
-int count;
-while ((count = 
-  ais.read(buffer, 0, buffer.length)) != -1) {
-if (count > 0) {
-  line.write(buffer, 0, count);
-}
-}
-line.drain();
-line.close();
-System.out.println("stop");
-setPlaying(false);
+		line.open(AUDIO_FORMAT);
+		line.start();
+
+		int bufferSize = (int) AUDIO_FORMAT.getSampleRate()
+				* AUDIO_FORMAT.getFrameSize();
+		byte buffer[] = new byte[bufferSize];
+
+		int count;
+		while ((count = ais.read(buffer, 0, buffer.length)) != -1) {
+			if (count > 0) {
+				line.write(buffer, 0, count);
+			}
+		}
+		line.drain();
+		line.close();
+		System.out.println("stop");
+		setPlaying(false);
 
 	}
-	
+
 	public synchronized static boolean isPlaying() {
 		return Player.playing;
 	}
@@ -168,6 +169,3 @@ setPlaying(false);
 	}
 
 }
-
-
-
