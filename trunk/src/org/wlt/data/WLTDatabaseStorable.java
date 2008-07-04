@@ -22,6 +22,6 @@ public interface WLTDatabaseStorable {
 	
 	public int getDatabaseID();
 	
-	public void deAttachFromDatabase();
+	public void deAttachFromDatabase() throws Exception;
 	
 }
