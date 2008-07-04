@@ -1,7 +1,7 @@
 TODO
 
-#1. Add a process dialog for the copy word list between database function
-#FIXED
+# 1. Add a process dialog for the copy word list between database function
+# FIXED
 
 2. The Export... button in the sound editor shall be moved to the word list editor and renamed to export selected. 
 
