@@ -27,11 +27,16 @@ public class Word implements WLTDatabaseStorable {
 	
 	private String comment;
 	
+	private boolean changed = true;
 
 	/** 
 	 * @see org.wlt.data.WLTDatabaseStorable#saveToDatabase()
 	 */
 	public void saveToDatabase() throws Exception {
+		
+		if(changed == false)
+			return;
+		
 		Connection conn = DatabaseHelper.createConnection();
 
 		String sql = "update WORDS set "+
@@ -68,6 +73,8 @@ public class Word implements WLTDatabaseStorable {
 		stmt.executeUpdate();
 
 		stmt.close();
+		
+		changed = false;
 
 	}
 
@@ -76,13 +83,12 @@ public class Word implements WLTDatabaseStorable {
 	 */
 	public void updateFromDatabase() throws Exception {
 		loadFromDatabase(databaseID);
+		changed = false;
 	}
 	
 	public void createNewInDatabase() throws Exception{
 		
 		Connection conn = DatabaseHelper.createConnection();
-		
-		System.out.println("new");
 		
 		String sql = "insert into WORDS(word) values(NULL)";
 		
@@ -98,6 +104,8 @@ public class Word implements WLTDatabaseStorable {
 		stmt.close();
 		
 		saveToDatabase();
+		
+		changed = false;
 		
 	}
 
@@ -125,6 +133,8 @@ public class Word implements WLTDatabaseStorable {
 		
 		stmt.close();
 		
+		changed = false;
+		
 	}
 
 	public String getWord() {
@@ -135,6 +145,8 @@ public class Word implements WLTDatabaseStorable {
 
 	public void setWord(String word) {
 		this.word = word;
+		
+		changed = true;
 	}
 
 
@@ -155,9 +167,9 @@ public class Word implements WLTDatabaseStorable {
 			byte[] sound = null;
 		
 			if(result.next()){
-		System.out.println("Result");
+
 				sound = result.getBytes("sound");
-System.out.println(sound!=null ?sound.length: "sound ar null");
+
 			}
 			
 			stmt.close();
@@ -191,6 +203,8 @@ System.out.println(sound!=null ?sound.length: "sound ar null");
 
 			stmt.close();
 		}
+		
+		changed = true;
 	}
 
 
@@ -203,6 +217,7 @@ System.out.println(sound!=null ?sound.length: "sound ar null");
 
 	public void setLanguage(String language) {
 		this.language = language;
+		changed = true;
 	}
 
 
@@ -221,6 +236,8 @@ System.out.println(sound!=null ?sound.length: "sound ar null");
 		
 		conn.close();
 		
+		changed = true;
+		
 	}
 
 	@Override
@@ -234,6 +251,8 @@ System.out.println(sound!=null ?sound.length: "sound ar null");
 		soundFile = getSoundFile();
 		System.out.println("DEATATCH GET SO " + soundFile == null);
 		databaseID = -1;
+		
+		changed = true;
 		
 	}
 

@@ -186,7 +186,10 @@ public class WordListTrainer extends JFrame {
 	}
 	
 	public void update(){
+		//System.out.println("Update call");
+		//new Exception().printStackTrace();
 		wordListSelectorPanel.update();
+		//System.out.println("Update call finished");
 	}
 
 	/**
