@@ -17,6 +17,8 @@ public class WordBinding implements WLTDatabaseStorable{
 		
 		private WordList wordList;
 		
+		private boolean changed = true;
+		
 		public WordBinding(WordList wordList){
 			this.wordList = wordList;
 			
@@ -28,6 +30,8 @@ public class WordBinding implements WLTDatabaseStorable{
 
 		public void setWordA(Word wordA) {
 			this.wordA = wordA;
+			
+			changed = true;
 		}
 
 		public Word getWordB() {
@@ -36,6 +40,8 @@ public class WordBinding implements WLTDatabaseStorable{
 
 		public void setWordB(Word wordB) {
 			this.wordB = wordB;
+			
+			changed = true;
 		}
 
 		public void createNewInDatabase() throws Exception {
@@ -57,7 +63,8 @@ public class WordBinding implements WLTDatabaseStorable{
 			stmt.close();
 
 			saveToDatabase();
-			
+
+			changed = false;
 		}
 
 		public int getDatabaseID() {
@@ -91,6 +98,7 @@ public class WordBinding implements WLTDatabaseStorable{
 
 			stmt.close();
 			
+			changed = false;
 		}
 
 		public void removeFromDatabase() throws Exception {
@@ -105,9 +113,14 @@ public class WordBinding implements WLTDatabaseStorable{
 
 			stmt.close();
 			
+			changed = true;
 		}
 
 		public void saveToDatabase() throws Exception {
+			
+			if (changed == false)
+				return;
+			
 			Connection conn = DatabaseHelper.createConnection();
 
 			String sql = "update WORD_LIST_WORDS set "+
@@ -140,22 +153,27 @@ public class WordBinding implements WLTDatabaseStorable{
 			
 			stmt.close();
 			
+			changed = false;
 		}
 
 		public void updateFromDatabase() throws Exception {
 		
 			loadFromDatabase(databaseID);
 			
+			changed = false;
+			
 		}
 
 		public void deAttachFromDatabase() throws Exception{
 			databaseID = -1;
-			System.out.println("WORD BINDING DEATACH");
+
 			if(wordA!=null)
 				wordA.deAttachFromDatabase();
 			
 			if(wordB!=null)
 				wordB.deAttachFromDatabase();
+			
+			changed = true;
 		}
 	
 }

@@ -38,8 +38,10 @@ public class WordListSelectorTable extends JTable {
 	}
 	
 	public void updateData(){
+		System.out.println("Update table");
 		tableModel.update();
 		repaint();
+		System.out.println("Update complete");
 	}
 	
 	public WordList getElementAtRow(int row){
@@ -78,7 +80,7 @@ public class WordListSelectorTable extends JTable {
             else if (col==2)
             	return wordListList.get(row).getLanguageB();
             else if (col==3)
-            	return wordListList.get(row).getWordBindings().size();
+            	return wordListList.get(row).getNumberOfWordBindings();
         	
         	
         	return null;

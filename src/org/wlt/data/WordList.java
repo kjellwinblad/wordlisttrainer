@@ -21,20 +21,21 @@ public class WordList implements WLTDatabaseStorable {
 
 	private List<WordBinding> wordBindings = new LinkedList<WordBinding>();
 
+	private boolean wordBindingsInit = false;
+	
+	private int numberOfWordBindings = 0;
+
 	public void saveToDatabase() throws Exception {
 		// TODO Auto-generated method stub
 		Connection conn = DatabaseHelper.createConnection();
 
-		String sql = "update WORD_LISTS set " 
-			+ "word_list_name=?," 
-			+ "languageA=?,"
-				+ "languageB=?," 
-				+ "dbVersion=?" 
+		String sql = "update WORD_LISTS set " + "word_list_name=?,"
+				+ "languageA=?," + "languageB=?," + "dbVersion=?"
 				+ " where id=?";
 
 		PreparedStatement stmt = conn.prepareStatement(sql);
 
-		//stmt.setString(1, "WORD_LISTS");
+		// stmt.setString(1, "WORD_LISTS");
 		stmt.setString(1, wordListName);
 		stmt.setString(2, languageA);
 		stmt.setString(3, languageB);
@@ -43,9 +44,12 @@ public class WordList implements WLTDatabaseStorable {
 		stmt.executeUpdate();
 
 		stmt.close();
-		
+
+		if (wordBindingsInit == false)
+			return;
+
 		for (WordBinding wb : wordBindings) {
-			
+
 			Word wordA = wb.getWordA();
 			Word wordB = wb.getWordB();
 
@@ -59,12 +63,11 @@ public class WordList implements WLTDatabaseStorable {
 			else
 				wordB.saveToDatabase();
 
-			
-			if(wb.getDatabaseID()==-1)
+			if (wb.getDatabaseID() == -1)
 				wb.createNewInDatabase();
 			else
 				wb.saveToDatabase();
-				
+
 		}
 	}
 
@@ -82,8 +85,6 @@ public class WordList implements WLTDatabaseStorable {
 		PreparedStatement stmt = conn.prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
 
-
-
 		stmt.executeUpdate();
 
 		ResultSet rs = stmt.getGeneratedKeys();
@@ -91,8 +92,7 @@ public class WordList implements WLTDatabaseStorable {
 			databaseID = rs.getInt(1);
 
 		stmt.close();
-		
-		
+
 		saveToDatabase();
 
 	}
@@ -116,25 +116,21 @@ public class WordList implements WLTDatabaseStorable {
 			this.languageB = result.getString("languageB");
 
 		}
-
+		
 		stmt.close();
 
-		// Create the word bindings
 		Statement stmt2 = conn.createStatement();
 
 		ResultSet result2 = stmt2
-				.executeQuery("select id from WORD_LIST_WORDS where word_list_id="
+				.executeQuery("select count(id) from WORD_LIST_WORDS where word_list_id="
 						+ databaseID);
-
-		while (result2.next()) {
-			WordBinding wordBinding = new WordBinding(this);
-			
-			wordBinding.loadFromDatabase(result2.getInt("id"));
-
-			wordBindings.add(wordBinding);
-		}
-
+		
+		result2.next();
+		numberOfWordBindings = result2.getInt(1);
+		
 		stmt2.close();
+		wordBindings = new LinkedList<WordBinding>();
+		wordBindingsInit = false;
 
 	}
 
@@ -156,12 +152,13 @@ public class WordList implements WLTDatabaseStorable {
 	}
 
 	public void setLanguageA(String languageA) {
-		if(languageA.length()>1)
-		this.languageA = languageA.substring(0, 1).toUpperCase()
-				+ languageA.substring(1, languageA.length()).toLowerCase();
-		else this.languageA = languageA;
-		
-		for(WordBinding a : wordBindings)
+		if (languageA.length() > 1)
+			this.languageA = languageA.substring(0, 1).toUpperCase()
+					+ languageA.substring(1, languageA.length()).toLowerCase();
+		else
+			this.languageA = languageA;
+
+		for (WordBinding a : wordBindings)
 			a.getWordA().setLanguage(this.languageA);
 	}
 
@@ -170,31 +167,32 @@ public class WordList implements WLTDatabaseStorable {
 	}
 
 	public void setLanguageB(String languageB) {
-		if(languageB.length()>1)
-		this.languageB = languageB.substring(0, 1).toUpperCase()
-				+ languageB.substring(1, languageB.length()).toLowerCase();
-		else this.languageB = languageB;
-		
-		for(WordBinding b : wordBindings)
+		if (languageB.length() > 1)
+			this.languageB = languageB.substring(0, 1).toUpperCase()
+					+ languageB.substring(1, languageB.length()).toLowerCase();
+		else
+			this.languageB = languageB;
+
+		for (WordBinding b : wordBindings)
 			b.getWordB().setLanguage(this.languageB);
 	}
 
 	public void removeFromDatabase() throws Exception {
-		if(databaseID == -1)
+		if (databaseID == -1)
 			return;
 		Connection conn = DatabaseHelper.createConnection();
 		Statement stmt = conn.createStatement();
 
 		stmt.execute("delete from WORD_LISTS where id=" + databaseID);
-		
-		for(WordBinding wb : wordBindings)
+
+		for (WordBinding wb : wordBindings)
 			wb.removeFromDatabase();
 
 		stmt.close();
 
 	}
-	
-	public static List<WordList> getWordListList() throws Exception{
+
+	public static List<WordList> getWordListList() throws Exception {
 		Connection conn = DatabaseHelper.createConnection();
 
 		String sql = "select id from WORD_LISTS";
@@ -203,16 +201,15 @@ public class WordList implements WLTDatabaseStorable {
 
 		ResultSet result = stmt.executeQuery(sql);
 		List<WordList> resultList = new LinkedList<WordList>();
-		
+
 		WordList wl;
-		
+
 		while (result.next()) {
 
 			int id = result.getInt("id");
 			wl = new WordList();
 			wl.loadFromDatabase(id);
 			resultList.add(wl);
-			
 
 		}
 
@@ -221,16 +218,45 @@ public class WordList implements WLTDatabaseStorable {
 		return resultList;
 	}
 
-	public List<WordBinding> getWordBindings() {
+	public List<WordBinding> getWordBindings() throws Exception {
+
+		if (wordBindingsInit == false) {
+
+			Connection conn = DatabaseHelper.createConnection();
+
+			// Create the word bindings
+			Statement stmt2 = conn.createStatement();
+
+			ResultSet result2 = stmt2
+					.executeQuery("select id from WORD_LIST_WORDS where word_list_id="
+							+ databaseID);
+
+			while (result2.next()) {
+				WordBinding wordBinding = new WordBinding(this);
+
+				wordBinding.loadFromDatabase(result2.getInt("id"));
+
+				
+				wordBindings.add(wordBinding);
+			}
+
+			stmt2.close();
+			wordBindingsInit = true;
+		}
 		return wordBindings;
 	}
 
-	public void deAttachFromDatabase() throws Exception{
+	public void deAttachFromDatabase() throws Exception {
 		databaseID = -1;
 		System.out.println("LIST DEATACH");
 		for (WordBinding b : wordBindings)
 			b.deAttachFromDatabase();
-		
+
+	}
+
+	public int getNumberOfWordBindings() {
+		// TODO Auto-generated method stub
+		return numberOfWordBindings;
 	}
 
 }

@@ -146,9 +146,15 @@ public class WordListEditorTablePanel extends JPanel {
 		newWordBinding.setWordA(wordA);
 
 		newWordBinding.setWordB(wordB);
-
+try{
 		wordList.getWordBindings().add(newWordBinding);
-
+	} catch (Exception e1) {
+		JOptionPane.showMessageDialog(this,
+				"Problems with connection to database\n"
+						+ e1.getMessage(), "Connection problem",
+				JOptionPane.ERROR_MESSAGE);
+		e1.printStackTrace();
+	}
 		wordListEditorTable.updateData();
 
 	}
