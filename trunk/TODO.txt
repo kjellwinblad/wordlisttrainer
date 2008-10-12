@@ -3,7 +3,14 @@ TODO
 # 1. Add a process dialog for the copy word list between database function
 # FIXED
 
-2. The Export... button in the sound editor shall be moved to the word list editor and renamed to export selected. 
+# 2. The Export... button in the sound editor shall be moved to the word list editor and renamed to export selected. 
+# FIXED
 
-3. Add an export dialog that shall be displayed when Export... is selected.
+# 3. Add an export dialog that shall be displayed when Export... is selected.
+# FIXED
 
+4. Fix the HTML export option
+
+5. Fix an export word list option that can be used to export a word list to a ziped xml file
+
+6. Fix an import word list option that can be used to impport a word list with the format mentioned above
