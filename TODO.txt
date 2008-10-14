@@ -14,3 +14,9 @@ TODO
 5. Fix an export word list option that can be used to export a word list to a ziped xml file
 
 6. Fix an import word list option that can be used to impport a word list with the format mentioned above
+
+7. Create the local database in the home folder of the user when the program starts and if the database doesn't exist there.
+
+8. Create an exporter that exports every word as a file
+
+9. Create a documentation
