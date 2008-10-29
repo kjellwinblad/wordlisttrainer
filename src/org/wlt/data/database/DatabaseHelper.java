@@ -14,8 +14,7 @@ public class DatabaseHelper {
 	
 	private static DatabaseMode dbMode = DatabaseMode.Local;
 	
-	private static String dbURL = 
-	"jdbc:derby://localhost:1527/DB;create=true;user=me;password=mine";
+	private static String dbURL;
 	private static Connection conn = null;
 	
 	private static String driver;

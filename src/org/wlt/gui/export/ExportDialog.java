@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.wlt.data.Word;
+import org.wlt.export.HTMLFileExporter;
 import org.wlt.export.WAVFileExporter;
 import org.wlt.gui.sound.WordSoundEditorPanel;
 
@@ -75,8 +76,13 @@ public class ExportDialog extends JFrame {
 		htmlFileExport.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(thisPanel, "Sorry, this function is not yet available");
+				
 				setVisible(false);
+				
+				HTMLFileExporter exporter = new HTMLFileExporter();
+				
+				exporter.export(words, parentComponent);
+				
 			}
 			
 		});

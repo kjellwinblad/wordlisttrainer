@@ -9,7 +9,8 @@ TODO
 # 3. Add an export dialog that shall be displayed when Export... is selected.
 # FIXED
 
-4. Fix the HTML export option
+# 4. Fix the HTML export option
+# FIXED
 
 5. Fix an export word list option that can be used to export a word list to a ziped xml file
 
