@@ -152,6 +152,7 @@ public class WordBinding implements WLTDatabaseStorable{
 			stmt.executeUpdate();
 			
 			stmt.close();
+
 			
 			changed = false;
 		}

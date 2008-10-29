@@ -238,6 +238,7 @@ public class WordList implements WLTDatabaseStorable {
 
 				
 				wordBindings.add(wordBinding);
+
 			}
 
 			stmt2.close();
@@ -247,8 +248,14 @@ public class WordList implements WLTDatabaseStorable {
 	}
 
 	public void deAttachFromDatabase() throws Exception {
+		getWordBindings();
+		
 		databaseID = -1;
-		System.out.println("LIST DEATACH");
+		
+		//wordBindingsInit = false;
+
+		
+		
 		for (WordBinding b : wordBindings)
 			b.deAttachFromDatabase();
 
