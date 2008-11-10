@@ -11,6 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,8 +25,10 @@ import javax.swing.JSeparator;
 import org.wlt.data.WordList;
 import org.wlt.data.database.DatabaseCopier;
 import org.wlt.data.database.DatabaseHelper;
+import org.wlt.export.XMLFileWordListExporter;
 import org.wlt.gui.dbconf.DatabaseSettingsDialog;
 import org.wlt.gui.wlselector.WordListSelectorPanel;
+import org.wlt.importers.XMLFileWordListImporter;
 import org.wlt.settings.DatabaseSettings;
 
 import com.sun.org.omg.CORBA.Initializer;
@@ -180,6 +184,73 @@ public class WordListTrainer extends JFrame {
 			});
 			
 			databaseMenu.add(copyLocal);
+			
+			JMenu exportInportMenu = new JMenu("Export & Import");
+			
+
+			
+			JMenuItem exportMenuItem = new JMenuItem("Export selected list to XML file...");
+			exportMenuItem.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					List<WordList> selectedWordLists= wordListSelectorPanel.getSelected();
+					if(selectedWordLists.size()>0){
+						WordList  selectedWordList = selectedWordLists.get(0);
+						XMLFileWordListExporter xmlFileExporter = new XMLFileWordListExporter();
+						xmlFileExporter.export(selectedWordList, thisFrame);
+					}else
+						JOptionPane.showMessageDialog(thisFrame, "No word list is selected.");
+				}
+				
+			});
+			exportInportMenu.add(exportMenuItem);
+			JMenuItem inportMenuItem = new JMenuItem("Import word list from XML file...");
+			inportMenuItem.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					XMLFileWordListImporter importer =  new XMLFileWordListImporter();
+					importer.importt(wordListSelectorPanel);
+					
+				}
+				
+			});
+			exportInportMenu.add(inportMenuItem);
+			mainMenu.add(exportInportMenu);
+			mainMenu.add(Box.createHorizontalGlue());
+			JMenu helpMenu = new JMenu("Help");
+			JMenuItem helpMenuItem = new JMenuItem("Help...");
+			helpMenuItem.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(thisFrame, "No help is currently available here. Please see\n" +
+															 "http://wordlisttrainer.googlecode.com for help\n" +
+															 "and to get the latest version.");
+					
+				}
+				
+			});
+			
+			helpMenu.add(helpMenuItem);
+			
+			JMenuItem aboutMenuItem = new JMenuItem("About...");
+			aboutMenuItem.addActionListener(new ActionListener(){
+
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(thisFrame, "<html><h1>World List Trainer</h1> \n" +
+															"<html><i>Developer:</i> Kjell Winblad (kjellwinblad@gmail.com)\n" +
+															"<html><i>License:</i> GNU General Public License v3\n" +
+															"\n" +
+															"Full source, downloads and other information are available at the web site:\n" +
+															"http://wordlisttrainer.googlecode.com\n"
+															 +"The project is currently looking for more developers.");
+					
+				}
+				
+			});
+			
+			helpMenu.add(aboutMenuItem);
+			
+			mainMenu.add(helpMenu);
 		}
 		
 		return mainMenu;
