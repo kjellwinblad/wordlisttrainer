@@ -36,6 +36,9 @@ public class WordSoundEditor extends JFrame {
 		add(wordSoundEditorPanel, BorderLayout.CENTER);
 		
 		pack();
+		
+		if(this.getSize().getWidth()<600)
+			this.setSize(600, (int)this.getSize().getHeight());
 	}
 
 	

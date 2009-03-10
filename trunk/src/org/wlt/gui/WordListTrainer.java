@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.Box;
@@ -45,7 +47,23 @@ public class WordListTrainer extends JFrame {
 
 	public WordListTrainer() {
 		thisFrame = this;
+		File propDir = new File(System.getProperty("user.home")
+				+ File.separator + DatabaseSettings.PROPERTIES_DIR);
+		
+		boolean firstTimeProgramRun = !propDir.exists();
+		
 		DatabaseHelper.setDatabaseSettings(DatabaseSettings.getInstance());
+		
+		if (firstTimeProgramRun){
+						try {
+							DatabaseHelper.createLocalDatabaseInDefaultLocation();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		}
+		
+		
 		initialize();
 
 	}

@@ -26,6 +26,35 @@ public class DatabaseHelper {
 	private static Connection networkConn;
 	
 	
+	public static String  CREATE_WORD_LIST_WORDS_STATMENT =
+	"CREATE TABLE WORD_LIST_WORDS (" + 
+	"		  id INTEGER GENERATED ALWAYS AS IDENTITY," +
+	"		  word_list_id INTEGER," +
+	"		  wordAID INTEGER," +
+	"		  wordBID INTEGER," +
+	"		  dbVersion INTEGER," +
+	"		PRIMARY KEY(id))";
+
+	public static String  CREATE_WORD_LISTS_STATMENT = 
+	"		CREATE TABLE WORD_LISTS (" +
+	"		  id INTEGER GENERATED ALWAYS AS IDENTITY," +
+	"		  word_list_name CLOB," +
+	"		  languageA CLOB," + 
+	"		  languageB CLOB," +
+	"		  dbVersion INTEGER," +
+	"		  PRIMARY KEY(id))";
+
+	public static String  CREATE_WORDS_STATMENT = 
+	"		CREATE TABLE WORDS (" +
+	"		  id INTEGER GENERATED ALWAYS AS IDENTITY," +
+	"		  word CLOB," +
+	"		  language CLOB," +
+	"		  wordcomment CLOB," +
+	"		  sound BLOB," +
+	"		  dbVersion INTEGER," +
+	"		PRIMARY KEY(id))";
+	
+	
 	
 	public static void setDatabaseSettings(DatabaseSettings databaseSettings){
 		
@@ -79,7 +108,7 @@ public class DatabaseHelper {
 	}
 
 	private static void setLocalConfig() {
-    	localDBURL =  "jdbc:derby:LocalDB;create=true";
+    	localDBURL =  "jdbc:derby:" + DatabaseSettings.getInstance().getLocalDatabaseLocation().getAbsolutePath() + ";create=true";
 		localDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	}
 
@@ -173,5 +202,12 @@ public class DatabaseHelper {
 
 	public static void setDbMode(DatabaseMode dbMode) {
 		DatabaseHelper.dbMode = dbMode;
+	}
+	
+	public static void createLocalDatabaseInDefaultLocation() throws Exception{
+		Connection con = DatabaseHelper.createConnection();
+		con.prepareStatement(DatabaseHelper.CREATE_WORD_LIST_WORDS_STATMENT).execute();
+		con.prepareStatement(DatabaseHelper.CREATE_WORD_LISTS_STATMENT).execute();
+		con.prepareStatement(DatabaseHelper.CREATE_WORDS_STATMENT).execute();
 	}
 }
