@@ -18,6 +18,10 @@ public class DatabaseSettings {
 	private boolean currentDatabaseMode = true;
 	
 	private NetworkDatabaseSettings networkDatabaseSettings = new NetworkDatabaseSettings();
+	
+	private File localDatabaseLocation = new File(System.getProperty("user.home")
+			+ File.separator + PROPERTIES_DIR + File.separator
+			+ "LocalDB");
 
 	
 	private static DatabaseSettings instance;
@@ -113,6 +117,14 @@ public class DatabaseSettings {
 	public boolean isCurrentDatabaseModeLocal() {
 		// TODO Auto-generated method stub
 		return currentDatabaseMode;
+	}
+
+	public File getLocalDatabaseLocation() {
+		return localDatabaseLocation;
+	}
+
+	public void setLocalDatabaseLocation(File localDatabaseLocation) {
+		this.localDatabaseLocation = localDatabaseLocation;
 	}
 
 }

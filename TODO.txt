@@ -12,12 +12,12 @@ TODO
 # 4. Fix the HTML export option
 # FIXED
 
-5. Fix an export word list option that can be used to export a word list to a ziped xml file
+# 5. Make the user decide where to put the local database the first time the program starts on an account
+# The user cant yet decide where the local DB shall be placed but a local db is created when the program starts for the first time in the home folder
 
-6. Fix an import word list option that can be used to impport a word list with the format mentioned above
+#6. Change the sound file format to speex which is compressed and consumes much less space
+#FIXED
 
-7. Create the local database in the home folder of the user when the program starts and if the database doesn't exist there.
+7. Create an exporter that exports every word as a file
 
-8. Create an exporter that exports every word as a file
-
-9. Create a documentation
+8. Create a documentation

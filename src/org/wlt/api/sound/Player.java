@@ -50,12 +50,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+
+import javazoom.jlGui.BasicPlayer;
+
+import org.xiph.speex.spi.Speex2PcmAudioInputStream;
 
 /**
  * <titleabbrev>SimpleAudioPlayer</titleabbrev> <title>Playing an audio file
@@ -97,17 +102,35 @@ public class Player {
 
 //<<<<<<< .mine
 	static {
-		float sampleRate = 16000;
-		int sampleSizeInBits = 16;
-		int channels = 1;
-		boolean signed = true;
-		boolean bigEndian = true;
+//		float sampleRate = 8000;
+//		int sampleSizeInBits = 16;
+//		int channels = 1;
+//		boolean signed = true;
+//		boolean bigEndian = true;
+		
+	    float sampleRate = 8000;
+	    int sampleSizeInBits = 8;
+	    int channels = 1;
+	    boolean signed = true;
+	    boolean bigEndian = true;
+
 		//AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 		//		44100.0F, 16, 2, 4, 44100.0F, false);
 		//AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 		//		8000.0F, 16, 2, 4, 8000.0F, false);
-		AUDIO_FORMAT = new AudioFormat(sampleRate,
-		 sampleSizeInBits, channels, signed, bigEndian);
+	    
+	   //AUDIO_FORMAT = new AudioFormat(
+        //        AudioFormat.Encoding.PCM_SIGNED,
+        //        8000.0F, 16, 2, 4, 8000.0F, false);
+	    
+	    AUDIO_FORMAT = new AudioFormat(8000, 16, 1, true, false);
+	    	
+	    	
+	    	//new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+			//	44100.0F, 16, 2, 4, 44100.0F, false);
+
+		//AUDIO_FORMAT = new AudioFormat(sampleRate,
+		// sampleSizeInBits, channels, signed, bigEndian);
 //=======
 //	static {
 //		float sampleRate = 8000;
@@ -144,19 +167,61 @@ public class Player {
 		// AudioFormat format = new AudioFormat(sampleRate,
 		// sampleSizeInBits, channels, signed, bigEndian);
 
+	
 		InputStream input = new ByteArrayInputStream(sound);
-		AudioInputStream ais = new AudioInputStream(input, AUDIO_FORMAT,
-				sound.length / AUDIO_FORMAT.getFrameSize());
 
+//		BasicPlayer basicPlayer = new BasicPlayer();
+//		
+//		basicPlayer.setDataSource(input);
+//		
+//		basicPlayer.startPlayback();
+//		
+//		long length  = (long)basicPlayer.getTotalLengthInSeconds()*1000;
+//		
+//		Thread.currentThread().wait(length);
+		
+		
+
+		
+		//AudioInputStream ais = AudioSystem.getAudioInputStream (input);
+		
+		AudioInputStream ais =  new Speex2PcmAudioInputStream(input, AUDIO_FORMAT, AudioSystem.NOT_SPECIFIED);
+
+		
+		//AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(ais);
+		
+		System.out.println("Sound Length " + sound.length);
+		
+		AudioFormat audioFormat = ais.getFormat();
+		
+		
+ System.out.println("AUDIO FORMAT " +audioFormat);
+			
+				//new AudioInputStream(input, AUDIO_FORMAT,
+				//sound.length / AUDIO_FORMAT.getFrameSize());
+
+		
+		
+		  int bytesPerFrame = 
+			  audioFormat.getFrameSize();
+			    if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
+			    // some audio formats may have unspecified frame size
+			    // in that case we may read any amount of bytes
+			    bytesPerFrame = 1;
+			  } 
+
+		
+		
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class,
-				AUDIO_FORMAT);
+				audioFormat);
 		SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 
-		line.open(AUDIO_FORMAT);
+		line.open(audioFormat);
 		line.start();
-
-		int bufferSize = (int) AUDIO_FORMAT.getSampleRate()
-				* AUDIO_FORMAT.getFrameSize();
+		
+		
+		int bufferSize = (int) audioFormat.getSampleRate()
+				* bytesPerFrame;
 		byte buffer[] = new byte[bufferSize];
 
 		int count;
