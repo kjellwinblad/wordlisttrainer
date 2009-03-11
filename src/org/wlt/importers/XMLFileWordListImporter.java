@@ -11,12 +11,16 @@ import javax.xml.bind.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wlt.data.Word;
 import org.wlt.data.WordBinding;
 import org.wlt.data.WordList;
 import org.wlt.gui.wlselector.WordListSelectorPanel; 
+
+import exlib.Base64;
 
 
 
@@ -64,6 +68,9 @@ public class XMLFileWordListImporter {
 	        
 	        NodeList nodes = wordList.getChildNodes();
 
+	        String languageA = null;
+	        String languageB = null;
+	        
 	        
 	        for(int n = 0; n < nodes.getLength();n++){
 	        	Node node = nodes.item(n);
@@ -71,14 +78,16 @@ public class XMLFileWordListImporter {
 	        		newWordList.setWordListName(node.getTextContent());
 	        	}else if(node.getNodeName().equals("languageA")){
 	        		newWordList.setLanguageA(node.getTextContent());
+	        		languageA = node.getTextContent();
 	        	}else if(node.getNodeName().equals("languageB")){
-	        		newWordList.setLanguageA(node.getTextContent());
+	        		newWordList.setLanguageB(node.getTextContent());
+	        		languageB = node.getTextContent();
 	        	}else if(node.getNodeName().equals("wordBindings")){
 	        		NodeList wordBindingNodes = node.getChildNodes();
 	        		for(int u = 0; u < wordBindingNodes.getLength();u++){
 	        			Node wordBindingItem = wordBindingNodes.item(u);
 	        			if(wordBindingItem.getNodeName().equals("wordBinding")){
-	        				WordBinding binding = processWordBinding(wordBindingItem);
+	        				WordBinding binding = processWordBinding(wordBindingItem, newWordList, languageA, languageB);
 	        				newWordList.getWordBindings().add(binding);
 	        			}
 	        		} 
@@ -91,9 +100,76 @@ public class XMLFileWordListImporter {
 	}
 
 
-	private WordBinding processWordBinding(Node wordBindingItem) {
-		// TODO Auto-generated method stub
-		return null;
+	private WordBinding processWordBinding(Node wordBindingItem, WordList newWordList, String languageA, String languageB) {
+		
+		NodeList nodes = wordBindingItem.getChildNodes();
+		
+		WordBinding binding = new WordBinding(newWordList);
+		boolean firstWord = true;
+		
+		for(int n = 0; n < nodes.getLength();n++){
+			Node node = nodes.item(n);
+			
+			if(node.getNodeName().equals("word") && firstWord){
+
+				Word wordA = processWord(node);
+				
+				wordA.setLanguage(languageA);
+				
+				binding.setWordA(wordA);
+				
+				firstWord = false;
+				
+        	}else if(node.getNodeName().equals("word") && !firstWord){
+				
+				Word wordB = processWord(node);
+				
+				wordB.setLanguage(languageB);
+				
+				binding.setWordB(wordB);
+        		
+        	}
+		}
+		
+		return binding;
+	}
+
+
+	private Word processWord(Node wordNode) {
+		
+		NodeList nodes = wordNode.getChildNodes();
+		
+		Word word = new Word();
+
+		
+		for(int n = 0; n < nodes.getLength();n++){
+			Node node = nodes.item(n);
+			
+			if(node.getNodeName().equals("wordText")){
+				
+				word.setWord(node.getTextContent());
+				
+        	}else if(node.getNodeName().equals("wordSoundData")){
+				
+				try {
+					word.setSoundFile(Base64.decode(node.getTextContent()));
+				} catch (DOMException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		
+        	}
+		}
+		
+		
+		
+		return word;
 	}
 
 

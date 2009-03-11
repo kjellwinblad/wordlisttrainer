@@ -187,7 +187,10 @@ try{
 	}
 	
 	private void exportWordList() {
-		new ExportDialog(getSelectedWords(), this).setVisible(true);
+		if(getSelectedWords().size()==0)
+			JOptionPane.showMessageDialog(this, "No words are selected. Some words have to be selectet for exporting.");
+		else
+		    new ExportDialog(getSelectedWords(), this).setVisible(true);
 		
 	}
 
