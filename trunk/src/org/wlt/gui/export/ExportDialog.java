@@ -53,23 +53,49 @@ public class ExportDialog extends JFrame {
 
 		add(exportButtonPanel, BorderLayout.CENTER);
 		
-		JButton wawSoundFileExport = new JButton("WAW Sound File");
+		//Playlist with multiple sound files
 		
-		wawSoundFileExport.addActionListener(new ActionListener(){
+		JButton playlistSoundFileExport = new JButton("Playlist with multiple sound files");
+		
+		playlistSoundFileExport.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
 				
-				WAVFileExporter exporter = new WAVFileExporter();
+				PlaylistExportDialog exporter = new PlaylistExportDialog(words, parentComponent);
 				
-				exporter.export(words, parentComponent);
+				exporter.setVisible(true);
+
 							
 			}
 			
 		});
 		
-		exportButtonPanel.add(wawSoundFileExport);
+		exportButtonPanel.add(playlistSoundFileExport);
+		
+		
+
+		//WAW sound file
+		
+		
+//		JButton wawSoundFileExport = new JButton("WAW Sound File");
+//		
+//		wawSoundFileExport.addActionListener(new ActionListener(){
+//
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				setVisible(false);
+//				
+//				WAVFileExporter exporter = new WAVFileExporter();
+//				
+//				exporter.export(words, parentComponent);
+//							
+//			}
+//			
+//		});
+//		
+//		exportButtonPanel.add(wawSoundFileExport);
 		
 		JButton htmlFileExport = new JButton("HTML File");
 		
