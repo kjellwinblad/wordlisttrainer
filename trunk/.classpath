@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/derbyrun.jar"/>
 	<classpathentry kind="lib" path="lib/derbytools.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
-	<classpathentry kind="lib" path="lib/jlGuiSpx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

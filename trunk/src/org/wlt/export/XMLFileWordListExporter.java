@@ -2,6 +2,7 @@ package org.wlt.export;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.List;
 
@@ -100,9 +101,11 @@ public class XMLFileWordListExporter implements WordListExporter {
 	        	word1Text.setTextContent(b.getWordA().getWord());
 	        	word1.appendChild(word1Text);
 
+	        	if(b.getWordA().getSoundFile()!= null){
 	        	Element word1SoundData = doc.createElement("wordSoundData");
 	        	word1SoundData.setTextContent(Base64.encode(b.getWordA().getSoundFile(), 80)); 
 	        	word1.appendChild(word1SoundData);
+	        	}
 	        	
 	        	//word2
 	        	Element word2 = doc.createElement("word");
@@ -112,9 +115,11 @@ public class XMLFileWordListExporter implements WordListExporter {
 	        	word2Text.setTextContent((b.getWordB().getWord()));
 	        	word2.appendChild(word2Text);
 
+	        	if(b.getWordB().getSoundFile()!= null){
 	        	Element word2SoundData = doc.createElement("wordSoundData");
 	        	word2SoundData.setTextContent(Base64.encode(b.getWordB().getSoundFile(), 80)); 
 	        	word2.appendChild(word2SoundData);
+	        	}
 	        }
 	        
 	        
@@ -141,10 +146,12 @@ public class XMLFileWordListExporter implements WordListExporter {
 	            xformer.transform(source, result);
 	            
 	        } catch (TransformerConfigurationException e) {
+	        	e.printStackTrace();
 	        } catch (TransformerException e) {
+	        	e.printStackTrace();
 	        }
 
-	        
+	        JOptionPane.showMessageDialog(parentComponent,words.getWordListName() + " has succesfully been exported to an XML-file.");
 	        
 	        
 	}
@@ -155,34 +162,6 @@ public class XMLFileWordListExporter implements WordListExporter {
 
 		JFileChooser fileChooser = new JFileChooser(
 				"Chose a file to export to...");
-
-//		FileFilter fileFilter = new FileFilter() {
-//
-//			public boolean accept(File f) {
-//
-//				if (f.isDirectory())
-//					return true;
-//
-//				if (f.getName().endsWith(".html")
-//						|| f.getName().endsWith(".htm")
-//						|| f.getName().endsWith(".HTM")
-//						|| f.getName().endsWith(".HTML")
-//						|| f.isDirectory())
-//					return true;
-//
-//				return false;
-//
-//			}
-//
-//			@Override
-//			public String getDescription() {
-//				// TODO Auto-generated method stub
-//				return "HTML Files";
-//			}
-//
-//		};
-
-//		fileChooser.addChoosableFileFilter(fileFilter);
 
 		fileChooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
 

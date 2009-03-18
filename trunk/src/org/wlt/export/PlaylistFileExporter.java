@@ -119,7 +119,7 @@ public class PlaylistFileExporter implements Exporter {
 			int toFillWithZeros = prefixLength - (cont + "").length();
 
 			File soundFileToWriteTo = new File(outputDir,
-					zeroString(toFillWithZeros) + cont + "_" + wordText
+					zeroString(toFillWithZeros) + cont + "_" + wordText.replace(' ', '_').replace('/', '|')
 							+ wordLanguage + "." + soundType.getExtension());
 
 			OutputStream outputStream = new FileOutputStream(soundFileToWriteTo);
