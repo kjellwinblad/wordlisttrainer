@@ -47,17 +47,28 @@ public class WordList implements WLTDatabaseStorable {
 
 		if (wordBindingsInit == false)
 			return;
-
+		int counter = 0;
 		for (WordBinding wb : wordBindings) {
-
+			
 			Word wordA = wb.getWordA();
 			Word wordB = wb.getWordB();
-
+			
+			if(wordA == null){
+				wordA = new Word();
+				wb.setWordA(wordA);
+			}
+			
 			if (wordA.getDatabaseID() == -1)
 				wordA.createNewInDatabase();
 			else
 				wordA.saveToDatabase();
 
+			
+			if(wordB == null){
+				wordB = new Word();
+				wb.setWordB(wordB);
+			}
+			
 			if (wordB.getDatabaseID() == -1)
 				wordB.createNewInDatabase();
 			else

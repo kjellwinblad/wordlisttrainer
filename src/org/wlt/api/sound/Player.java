@@ -51,7 +51,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.xiph.speex.spi.Speex2PcmAudioInputStream;
 
-/**
+/**    http://pydev.sourceforge.net/updates/
  * <titleabbrev>SimpleAudioPlayer</titleabbrev> <title>Playing an audio file
  * (easy)</title>
  * 
