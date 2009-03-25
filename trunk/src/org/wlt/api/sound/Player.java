@@ -151,7 +151,7 @@ public class Player {
 	}
 
 	public static synchronized void play(byte[] sound) throws Exception {
-		System.out.println("play");
+		//System.out.println("play");
 		setPlaying(true);
 		// float sampleRate = 8000;
 		// int sampleSizeInBits = 8;
@@ -184,7 +184,7 @@ public class Player {
 		}
 		line.drain();
 		line.close();
-		System.out.println("stop");
+		//System.out.println("stop");
 		setPlaying(false);
 
 	}
