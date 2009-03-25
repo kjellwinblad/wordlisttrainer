@@ -59,7 +59,7 @@ public class Word implements WLTDatabaseStorable {
 		
 		if(soundFile != null){
 			
-			System.out.println("SOUND FILE NOT NULL WHEN SAVING NEW");
+
 			i++;
 			stmt.setBytes(i, soundFile);
 			soundFile = null;
