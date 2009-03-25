@@ -247,9 +247,9 @@ public class Word implements WLTDatabaseStorable {
 	}
 
 	public void deAttachFromDatabase() throws Exception{
-		System.out.println("WORD DEATACH");
+
 		soundFile = getSoundFile();
-		System.out.println("DEATATCH GET SO " + soundFile == null);
+
 		databaseID = -1;
 		
 		changed = true;

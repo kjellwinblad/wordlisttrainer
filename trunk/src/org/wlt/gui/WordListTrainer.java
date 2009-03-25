@@ -55,6 +55,8 @@ public class WordListTrainer extends JFrame {
 		DatabaseHelper.setDatabaseSettings(DatabaseSettings.getInstance());
 		
 		if (firstTimeProgramRun){
+			
+						propDir.mkdirs();
 						try {
 							DatabaseHelper.createLocalDatabaseInDefaultLocation();
 						} catch (Exception e) {

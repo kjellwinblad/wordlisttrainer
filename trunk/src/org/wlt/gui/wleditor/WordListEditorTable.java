@@ -3,6 +3,11 @@
  */
 package org.wlt.gui.wleditor;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -39,7 +44,12 @@ public class WordListEditorTable extends JTable {
 		this.wordList = wordList;
 		try {
 			this.wordBindings = wordList.getWordBindings();
+			
+
+			
+			
 		} catch (Exception e1) {
+			
 			JOptionPane.showMessageDialog(this,
 					"Problems with connection to database\n" + e1.getMessage(),
 					"Connection problem", JOptionPane.ERROR_MESSAGE);
@@ -47,11 +57,55 @@ public class WordListEditorTable extends JTable {
 		}
 		this.tableModel = new WordListEditorTableModel();
 		setModel(tableModel);
+		
+		if(getRowCount()==0){
+			addRow();
+
+		}
 
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setRowSelectionAllowed(true);
 		setColumnSelectionAllowed(true);
 		setCellSelectionEnabled(true);
+		
+		addKeyListener(new KeyListener(){
+
+			public void keyPressed(KeyEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+
+			public void keyReleased(KeyEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+
+			public void keyTyped(KeyEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+			
+		});
+		
+		addMouseListener(new MouseAdapter(){
+
+			public void mouseClicked(MouseEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+
+
+			public void mousePressed(MouseEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+
+			public void mouseReleased(MouseEvent arg0) {
+				checkForAutomaticAddRow();
+				
+			}
+			
+		});
 		getColumnModel().addColumnModelListener(new TableColumnModelListener() {
 
 			public void columnMoved(TableColumnModelEvent e) {
@@ -82,6 +136,17 @@ public class WordListEditorTable extends JTable {
 			}
 
 		});
+	}
+
+	protected void checkForAutomaticAddRow() {
+
+		if(getCellEditor()!=null){
+
+			if(getEditingRow() ==(getRowCount()-1))
+				addRow();
+		}
+			
+		
 	}
 
 	class WordListEditorTableModel extends AbstractTableModel {
@@ -192,6 +257,33 @@ public class WordListEditorTable extends JTable {
 
 	public boolean isLangAFirst() {
 		return langAFirst;
+	}
+
+	public void addRow() {
+		Word wordA = new Word();
+		wordA.setLanguage(wordList.getLanguageA());
+		wordA.setWord("");
+
+		Word wordB = new Word();
+		wordB.setLanguage(wordList.getLanguageB());
+		wordB.setWord("");
+
+		WordBinding newWordBinding = new WordBinding(wordList);
+
+		newWordBinding.setWordA(wordA);
+
+		newWordBinding.setWordB(wordB);
+try{
+		wordList.getWordBindings().add(newWordBinding);
+	} catch (Exception e1) {
+		JOptionPane.showMessageDialog(this,
+				"Problems with connection to database\n"
+						+ e1.getMessage(), "Connection problem",
+				JOptionPane.ERROR_MESSAGE);
+		e1.printStackTrace();
+	}
+		updateData();
+		
 	}
 
 }

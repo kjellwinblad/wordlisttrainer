@@ -38,10 +38,10 @@ public class WordListSelectorTable extends JTable {
 	}
 	
 	public void updateData(){
-		System.out.println("Update table");
+
 		tableModel.update();
 		repaint();
-		System.out.println("Update complete");
+
 	}
 	
 	public WordList getElementAtRow(int row){

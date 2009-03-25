@@ -256,7 +256,7 @@ public class PlaylistExportDialog extends JFrame {
 					
 					PlaylistFileExporter exporter = new PlaylistFileExporter();
 					try {
-						System.out.println("START EXPORT");
+
 						exporter.export(words, parentComponent, (Type)jComboBox.getSelectedItem(), jCheckBox.isSelected(), exportDir);
 						thisComp.setVisible(false);
 					} catch (Exception e1) {

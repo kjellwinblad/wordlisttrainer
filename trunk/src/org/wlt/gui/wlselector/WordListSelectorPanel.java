@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.wlt.data.Word;
+import org.wlt.data.WordBinding;
 import org.wlt.data.WordList;
 import org.wlt.gui.wleditor.WordListEditor;
 
@@ -95,7 +97,7 @@ public class WordListSelectorPanel extends JPanel {
 	
 	private void addWordList() {
 		WordList wordList = new WordList();
-		 
+
 		wordList.setLanguageA("Swedish");
 		wordList.setLanguageB("Russian");
 		
@@ -123,7 +125,7 @@ public class WordListSelectorPanel extends JPanel {
 			public void windowClosing(WindowEvent e) {
 				try {
 					wlEditor.getWordList().saveToDatabase();
-					System.out.println("Saved to database");
+
 					wordListTable.updateData();
 					wordListTable.repaint();
 				} catch (Exception e1) {
