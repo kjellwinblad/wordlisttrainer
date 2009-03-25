@@ -110,7 +110,7 @@ public class WordSoundEditorPanel extends JPanel{
 					
 						SwingUtilities.invokeAndWait(new Runnable(){
 							public void run() {
-								System.out.println(w.getWord());
+
 								wordSoundList.setSelectedValue(w, true);
 								wordSoundPanel.playSound();
 								playStart = System.currentTimeMillis();
@@ -125,7 +125,7 @@ public class WordSoundEditorPanel extends JPanel{
 					while((System.currentTimeMillis() - playStart < 200) || Player.isPlaying())
 						Thread.yield();
 					
-					System.out.println((double)System.currentTimeMillis()/1000.0);
+
 					
 					if(stop.get()){
 						break;

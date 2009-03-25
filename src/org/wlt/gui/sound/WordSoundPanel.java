@@ -205,7 +205,7 @@ public class WordSoundPanel extends JPanel {
 			try {
 				thisPanel.setRecording(true);
 				Recorder.record();
-				System.out.println("start");
+
 				setBackground(Color.RED);
 				recButton.setText("stop record");
 				
@@ -270,7 +270,7 @@ public class WordSoundPanel extends JPanel {
 	}
 
 	public void fireKey(KeyEvent e) {
-		System.out.println("?");
+
 		if (e.getKeyCode() == KeyEvent.VK_A && !isRecording) {
 
 			recordOrStopRecord();
@@ -278,7 +278,7 @@ public class WordSoundPanel extends JPanel {
 
 			recordOrStopRecord();
 		} else if (e.isActionKey()) {
-			System.out.println("Z");
+
 			recordOrStopRecord();
 		}
 
@@ -342,7 +342,7 @@ public class WordSoundPanel extends JPanel {
 	public void setWord(Word word) throws Exception {
 		if (this.isRecording())
 			throw new Exception("The word is being recorded");
-		System.out.println("SET WORD");
+
 		this.word = word;
 		defaultColor = word.getSoundFile() == null ? this.defaultColor
 				: Color.GREEN;

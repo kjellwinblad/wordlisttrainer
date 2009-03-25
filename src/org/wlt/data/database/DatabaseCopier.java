@@ -76,10 +76,7 @@ public class DatabaseCopier {
 //		
 //		//Copy all word bindings
 		
-		System.out.print("FROM: " );
-		System.out.println(from);
-		System.out.print("TO: " );
-		System.out.println(to);
+
 		
 		double process = 0.0;
 		
@@ -99,8 +96,7 @@ public class DatabaseCopier {
 		
 		l.createNewInDatabase();
 		
-		System.out.print("COPIES: " );
-		System.out.println(l.getWordListName());
+
 		
 		notifier.setStatusMessage("Copying word list: " + l.getWordListName());
 		

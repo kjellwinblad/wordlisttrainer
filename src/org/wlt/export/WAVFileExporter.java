@@ -97,8 +97,7 @@ public class WAVFileExporter implements Exporter{
 		for(Word word : words)
 			audioLength = audioLength + word.getSoundFile().length / Player.AUDIO_FORMAT.getFrameSize();
 		
-		System.out.println(Player.AUDIO_FORMAT);
-		System.out.println(Player.AUDIO_FORMAT.getFrameSize());
+
 		AudioInputStream audioStream = new AudioInputStream(new ByteArrayInputStream(soundByteArray),
 				Player.AUDIO_FORMAT,
                 audioLength);

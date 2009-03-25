@@ -30,7 +30,7 @@ public class HTMLFileExporter implements Exporter {
 
 			if (!fetchFile())
 				return;
-			System.out.println("FILE FETCHED");
+
 			saveWordDataToFile();
 
 		} catch (Exception e) {

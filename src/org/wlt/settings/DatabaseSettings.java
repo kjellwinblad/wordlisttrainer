@@ -32,7 +32,7 @@ public class DatabaseSettings {
 			if (!createInstanceFromFile())
 				instance = new DatabaseSettings();
 		}
-		System.out.println("is local " + instance.isCurrentDatabaseModeLocal());
+
 		return instance;
 	}
 

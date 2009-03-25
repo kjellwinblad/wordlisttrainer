@@ -26,6 +26,8 @@ import javax.swing.filechooser.FileFilter;
 import org.wlt.api.sound.Player;
 import org.wlt.data.Word;
 import org.xiph.speex.spi.Speex2PcmAudioInputStream;
+import org.xiph.speex.spi.SpeexAudioFileWriter;
+import org.xiph.speex.spi.SpeexEncoding;
 import org.xiph.speex.spi.SpeexFileFormatType;
 
 public class PlaylistFileExporter implements Exporter {
@@ -86,7 +88,7 @@ public class PlaylistFileExporter implements Exporter {
 	private void saveSoundDataToFile()  {
 		
 		try{
-		System.out.println("SAVE SOUND DATA");
+
 
 		int s = words.size();
 		int prefixLength = (s < 10 ? 1 : (s < 100 ? 2 : (s < 1000 ? 3
@@ -113,7 +115,7 @@ public class PlaylistFileExporter implements Exporter {
 			} else if (soundType == AudioFileFormat.Type.AIFF) {
 				input = getByteArrayInputStreamForAIFF(sound);
 			} else if (soundType == SpeexFileFormatType.SPEEX) {
-				input = new ByteArrayInputStream(sound);
+				input = getByteArrayInputStreamForSPEEX(sound);
 			}
 
 			int toFillWithZeros = prefixLength - (cont + "").length();
@@ -146,6 +148,34 @@ public class PlaylistFileExporter implements Exporter {
 
 	}
 
+	private InputStream getByteArrayInputStreamForSPEEX(byte[] sound) throws Exception {
+		
+		InputStream input = new ByteArrayInputStream(sound);
+		
+		AudioInputStream ais =  new AudioInputStream(input, Player.AUDIO_FORMAT, sound.length  / Player.AUDIO_FORMAT.getFrameSize());
+		
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
+		SpeexEncoding speexEncode = new SpeexEncoding("SPEEX_Q8", 8, false);
+		
+		AudioFormat targetFormat = new AudioFormat(
+				speexEncode,
+				 Player.AUDIO_FORMAT.getSampleRate() ,
+				        -1,
+				        Player.AUDIO_FORMAT.getChannels(),  -1,  -1,  false); 
+		
+		AudioInputStream audioInputStream =
+			AudioSystem.getAudioInputStream(targetFormat, ais);
+		
+		SpeexAudioFileWriter speexWriter = new SpeexAudioFileWriter();
+		
+		speexWriter.write(audioInputStream, SpeexFileFormatType.SPEEX, output);
+
+		return new ByteArrayInputStream(output.toByteArray());
+	
+
+	}
+
 	private String zeroString(int toFillWithZeros) {
 		// TODO Auto-generated method stub
 		String zeros = "";
@@ -160,7 +190,7 @@ public class PlaylistFileExporter implements Exporter {
 		
 		InputStream input = new ByteArrayInputStream(sound);
 		
-		AudioInputStream ais =  new Speex2PcmAudioInputStream(input, Player.AUDIO_FORMAT,  100000/*AudioSystem.NOT_SPECIFIED*/);
+		AudioInputStream ais =  new AudioInputStream(input, Player.AUDIO_FORMAT, sound.length  / Player.AUDIO_FORMAT.getFrameSize());
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
@@ -171,10 +201,10 @@ public class PlaylistFileExporter implements Exporter {
 	}
 
 	private InputStream getByteArrayInputStreamForAU(byte[] sound) throws Exception {
-
+		
 		InputStream input = new ByteArrayInputStream(sound);
 		
-		AudioInputStream ais =  new Speex2PcmAudioInputStream(input, Player.AUDIO_FORMAT,  100000/*AudioSystem.NOT_SPECIFIED*/);
+		AudioInputStream ais =  new AudioInputStream(input, Player.AUDIO_FORMAT, sound.length  / Player.AUDIO_FORMAT.getFrameSize());
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
@@ -188,10 +218,7 @@ public class PlaylistFileExporter implements Exporter {
 		
 		InputStream input = new ByteArrayInputStream(sound);
 		
-	
-		
-		AudioInputStream ais =  new Speex2PcmAudioInputStream(input, Player.AUDIO_FORMAT, 100000/*AudioSystem.NOT_SPECIFIED*/);
-		
+		AudioInputStream ais =  new AudioInputStream(input, Player.AUDIO_FORMAT, sound.length  / Player.AUDIO_FORMAT.getFrameSize());
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
