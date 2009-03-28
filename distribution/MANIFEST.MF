@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: derby.jar derbyclient.jar derbynet.jar derbyrun.jar derbyt
+ ools.jar formsrt.jar xstream-1.2.1.jar jspeex.jar
+Main-Class: org.wlt.gui.WordListTrainer
+
