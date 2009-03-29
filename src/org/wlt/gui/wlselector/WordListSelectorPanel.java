@@ -17,11 +17,14 @@ import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 
 import org.wlt.data.Word;
 import org.wlt.data.WordBinding;
@@ -57,9 +60,15 @@ public class WordListSelectorPanel extends JPanel {
 		add(scrollPane, BorderLayout.CENTER);
 		
 		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout(new FlowLayout());
 		
-		JButton addButton = new JButton("Add Word List");
+		JToolBar toolBar = new JToolBar();
+		BoxLayout boxLayout = new BoxLayout(controlPanel, BoxLayout.X_AXIS);
+		controlPanel.setLayout(boxLayout);
+		
+		JButton addButton = new JButton();
+		addButton.setToolTipText("Add Word List");
+		addButton.setIcon(new ImageIcon(getClass().getResource("/images/edit_add.png"), "add word list"));
+		
 		
 		addButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -67,9 +76,13 @@ public class WordListSelectorPanel extends JPanel {
 			}
 		});
 		
-		controlPanel.add(addButton);
+		toolBar.add(addButton);
 		
-		JButton editButton = new JButton("Edit Selected Item");
+		JButton editButton = new JButton();
+		editButton.setToolTipText("Edit Selected Item");
+		editButton.setIcon(new ImageIcon(getClass().getResource("/images/pencil.png"), "edit selected"));
+		
+		
 		
 		editButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -77,17 +90,23 @@ public class WordListSelectorPanel extends JPanel {
 			}
 		});
 		
-		controlPanel.add(editButton);
+		toolBar.add(editButton);
 		
-		JButton deleteButton = new JButton("Delete Selected Item(s)");
+		JButton deleteButton = new JButton();
+		deleteButton.setToolTipText("Delete Selected Item(s)");
+		deleteButton.setIcon(new ImageIcon(getClass().getResource("/images/editdelete.png"), "delete list(s)"));
+		
 		
 		deleteButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				deleteWordList();
+				if(JOptionPane.YES_OPTION==JOptionPane.showConfirmDialog(thisPanel, "Are you sure that you want to delete the selected word list(s)?"))
+					deleteWordList();
 			}
 		});
 		
-		controlPanel.add(deleteButton);
+		toolBar.add(deleteButton);
+		
+		controlPanel.add(toolBar);
 		
 		add(controlPanel, BorderLayout.SOUTH);
 		

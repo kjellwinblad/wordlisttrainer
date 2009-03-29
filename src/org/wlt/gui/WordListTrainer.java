@@ -5,6 +5,8 @@ package org.wlt.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -16,6 +18,7 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -63,6 +66,13 @@ public class WordListTrainer extends JFrame {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						
+						try {
+							Thread.sleep(1500);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 		}
 		
 		
@@ -71,6 +81,11 @@ public class WordListTrainer extends JFrame {
 	}
 	
 	private void initialize() {
+		
+		
+		Image im = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/icon.png"));
+		
+		setIconImage(im);
 		
 		setJMenuBar(getMainMenu());
 		
@@ -256,13 +271,14 @@ public class WordListTrainer extends JFrame {
 			aboutMenuItem.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
+					
 					JOptionPane.showMessageDialog(thisFrame, "<html><h1>World List Trainer</h1> \n" +
 															"<html><i>Developer:</i> Kjell Winblad (kjellwinblad@gmail.com)\n" +
 															"<html><i>License:</i> GNU General Public License v3\n" +
 															"\n" +
 															"Full source, downloads and other information are available at the web site:\n" +
 															"http://wordlisttrainer.googlecode.com\n"
-															 +"The project is currently looking for more developers.");
+															 +"The project is currently looking for more developers.", "About", JOptionPane.INFORMATION_MESSAGE, new ImageIcon( getClass().getResource("/images/wordlisttrainer_logo.png"), "icon"));
 					
 				}
 				
