@@ -15,6 +15,7 @@ CREATE TABLE WORD_LIST_WORDS (
   word_list_id INTEGER,
   wordAID INTEGER,
   wordBID INTEGER,
+  position INTEGER,
   dbVersion INTEGER,
 PRIMARY KEY(id));
 

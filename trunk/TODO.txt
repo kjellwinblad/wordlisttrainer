@@ -18,7 +18,11 @@ TODO
 #6. Change the sound file format to speex which is compressed and consumes much less space
 #FIXED
 
-7. Create an exporter that exports every word as a file
+#7. Create an exporter that exports every word as a file
+#FIXED
 
+#8. Change back to waw file format as database sound format due to too bad quality
 
-8. Create a documentation
+#9. Make it possible to move items in the word list up and down
+
+10. Create a documentation

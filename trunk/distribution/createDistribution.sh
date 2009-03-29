@@ -19,7 +19,7 @@ echo -n '.jnlp">
 
                 <description kind="short">This is a program that is made for language learning and that makes it easy to create and share word lists with the source language in one column and the language that shall be learned in the other as well as recording and attaching sounds to every word.</description>
 
-                <description kind="tooltip">Word List Trainer</description>
+                <description kind="tooltip">A program for creation of word lists</description>
 
                 <icon href="href="http://www.cs.umu.se/~kjellw/wltws/lib/icon.png" kind="default"/>
 
