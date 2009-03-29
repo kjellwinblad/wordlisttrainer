@@ -5,6 +5,10 @@ mkdir lib
 #            jlGuiSpx.jar    wordlisttrainerCURRENT.jar  
 
 BINDIR=/home/kjellw/workspace/word_list_trainer/lib
+
+#icon
+cp $BINDIR/icon.png ./lib/icon.png
+
 #1
 JARNAME=wordlisttrainerCURRENT.jar
 

@@ -21,7 +21,7 @@ echo -n '.jnlp">
 
                 <description kind="tooltip">Word List Trainer</description>
 
-                <!--<icon href="icon.png" kind="default"/>-->
+                <icon href="href="http://www.cs.umu.se/~kjellw/wltws/lib/icon.png" kind="default"/>
 
                 <offline-allowed/>
 
