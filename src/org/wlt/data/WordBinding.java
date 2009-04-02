@@ -19,6 +19,19 @@ public class WordBinding implements WLTDatabaseStorable{
 		
 		private boolean changed = true;
 		
+		private int position = -1;
+		
+	
+
+		public void setPosition(int position) {
+			
+			if (position !=this.position)
+				changed = true;
+			
+			this.position = position;
+
+		}
+
 		public WordBinding(WordList wordList){
 			this.wordList = wordList;
 			
@@ -127,6 +140,7 @@ public class WordBinding implements WLTDatabaseStorable{
 				"word_list_id=?," +
 				"wordAID=?," +
 				"wordBID=?," +
+				"position=?," +
 				"dbVersion=?" +
 				" where id=?";
 			
@@ -146,8 +160,9 @@ public class WordBinding implements WLTDatabaseStorable{
 			stmt.setInt(1, wordList.getDatabaseID());
 			stmt.setInt(2, wordA.getDatabaseID());
 			stmt.setInt(3, wordB.getDatabaseID());
-			stmt.setInt(4, 0);
-			stmt.setInt(5, databaseID);
+			stmt.setInt(4, position);
+			stmt.setInt(5, 1);
+			stmt.setInt(6, databaseID);
 			
 			stmt.executeUpdate();
 			
