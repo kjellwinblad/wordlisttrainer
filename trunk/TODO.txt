@@ -13,7 +13,7 @@ TODO
 # FIXED
 
 # 5. Make the user decide where to put the local database the first time the program starts on an account
-# The user cant yet decide where the local DB shall be placed but a local db is created when the program starts for the first time in the home folder
+# FIXED The user cant yet decide where the local DB shall be placed but a local db is created when the program starts for the first time in the home folder
 
 #6. Change the sound file format to speex which is compressed and consumes much less space
 #FIXED
@@ -22,7 +22,11 @@ TODO
 #FIXED
 
 #8. Change back to waw file format as database sound format due to too bad quality
+#FIXED
 
 #9. Make it possible to move items in the word list up and down
+#FIXED
 
-10. Create a documentation
+10. Make it possible to copy words from one word list to an other word list
+
+11. Create a documentation

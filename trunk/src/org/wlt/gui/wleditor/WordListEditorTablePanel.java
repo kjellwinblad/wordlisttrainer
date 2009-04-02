@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,6 +170,8 @@ public class WordListEditorTablePanel extends JPanel {
 
 		add(getControlPanel(), BorderLayout.SOUTH);
 		
+
+		
 		
 
 	}
@@ -189,12 +193,36 @@ JToolBar toolBar = new JToolBar();
 
 		    addButton.setIcon(new ImageIcon(getClass().getResource("/images/edit_add.png"), "add"));
 
-
-					
-			
 			toolBar.add(addButton);
 			
+			JButton upButton = new JButton();
 
+			upButton.setToolTipText("Move selected row(s) up in the list");
+			
+			upButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					moveSelectedUp();
+				}
+
+			});
+
+			upButton.setIcon(new ImageIcon(getClass().getResource("/images/1uparrow.png"), "up"));
+
+			toolBar.add(upButton);
+			
+			JButton downButton = new JButton();
+
+			downButton.setToolTipText("Move selected row(s) down in the list");
+			
+			downButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					moveSelectedDown();
+				}
+			});
+
+			downButton.setIcon(new ImageIcon(getClass().getResource("/images/1downarrow.png"), "add"));
+
+			toolBar.add(downButton);
 
 			JButton openInRecorEditorButton = new JButton(
 					);
@@ -287,6 +315,109 @@ JToolBar toolBar = new JToolBar();
 		}
 
 		return controlPanel;
+	}
+
+	private void moveSelectedDown() {
+		
+		List<WordBinding> bindings = null;
+	
+		ArrayList<Integer> newSelectionList = new ArrayList<Integer>();
+		
+		try {
+			bindings = wordList.getWordBindings();
+			int rows[] = wordListEditorTable.getSelectedRows();
+			int size = bindings.size();
+			
+			ArrayList<Integer> selectedRowsList = new ArrayList<Integer>();
+			
+			for(int n : rows)
+				selectedRowsList.add(n);
+		
+			Collections.sort(selectedRowsList);
+			Collections.reverse(selectedRowsList);
+			
+			
+			for(int row : selectedRowsList){
+				if(row < size-1){
+				
+					WordBinding b = bindings.get(row);
+					bindings.remove(row);
+					bindings.add(row + 1, b);
+					
+					newSelectionList.add(row + 1);
+					
+				}				
+			}
+				wordListEditorTable.clearSelection();
+			
+
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
+		}
+		wordListEditorTable.updateData();
+		
+		//wordListEditorTable.clearSelection();
+		
+		for(int n : newSelectionList){
+
+			wordListEditorTable.changeSelection(n, 0, true, false);
+			wordListEditorTable.changeSelection(n, 1, true, true);
+		}
+
+		//wordListEditorTable.updateUI();
+
+	}
+
+	private void moveSelectedUp() {
+		List<WordBinding> bindings = null;
+		
+		ArrayList<Integer> newSelectionList = new ArrayList<Integer>();
+		
+		try {
+			bindings = wordList.getWordBindings();
+			int rows[] = wordListEditorTable.getSelectedRows();
+			int size = bindings.size();
+			
+			ArrayList<Integer> selectedRowsList = new ArrayList<Integer>();
+			
+			for(int n : rows)
+				selectedRowsList.add(n);
+		
+			Collections.sort(selectedRowsList);
+			//Collections.reverse(selectedRowsList);
+			
+			
+			for(int row : selectedRowsList){
+				if(row > 0){
+				
+					WordBinding b = bindings.get(row);
+					bindings.remove(row);
+					bindings.add(row - 1, b);
+					
+					newSelectionList.add(row - 1);
+					
+				}				
+			}
+				wordListEditorTable.clearSelection();
+			
+
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
+		}
+		wordListEditorTable.updateData();
+		
+		//wordListEditorTable.clearSelection();
+		
+		for(int n : newSelectionList){
+
+			wordListEditorTable.changeSelection(n, 0, true, false);
+			wordListEditorTable.changeSelection(n, 1, true, true);
+		}
+		
 	}
 
 	private void translate() {

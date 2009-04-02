@@ -42,6 +42,10 @@ public class WordListEditorTable extends JTable {
 	public WordListEditorTable(WordList wordList) {
 		thisTable = this;
 		this.wordList = wordList;
+		
+		   setColumnSelectionAllowed(true);
+		   setRowSelectionAllowed(true);
+		
 		try {
 			this.wordBindings = wordList.getWordBindings();
 			
@@ -139,7 +143,7 @@ public class WordListEditorTable extends JTable {
 	}
 
 	protected void checkForAutomaticAddRow() {
-
+System.out.println("WHYEDI");
 		if(getCellEditor()!=null){
 
 			if(getEditingRow() ==(getRowCount()-1))

@@ -35,11 +35,11 @@ public class WordList implements WLTDatabaseStorable {
 
 		PreparedStatement stmt = conn.prepareStatement(sql);
 
-		// stmt.setString(1, "WORD_LISTS");
+
 		stmt.setString(1, wordListName);
 		stmt.setString(2, languageA);
 		stmt.setString(3, languageB);
-		stmt.setInt(4, 0);
+		stmt.setInt(4, 1);
 		stmt.setInt(5, databaseID);
 		stmt.executeUpdate();
 
@@ -74,10 +74,14 @@ public class WordList implements WLTDatabaseStorable {
 			else
 				wordB.saveToDatabase();
 
+			wb.setPosition(counter);
+			
 			if (wb.getDatabaseID() == -1)
 				wb.createNewInDatabase();
 			else
 				wb.saveToDatabase();
+			
+			counter = counter  + 1;
 
 		}
 	}
@@ -240,7 +244,8 @@ public class WordList implements WLTDatabaseStorable {
 
 			ResultSet result2 = stmt2
 					.executeQuery("select id from WORD_LIST_WORDS where word_list_id="
-							+ databaseID);
+							+ databaseID +
+							"order by position ASC");
 
 			while (result2.next()) {
 				WordBinding wordBinding = new WordBinding(this);

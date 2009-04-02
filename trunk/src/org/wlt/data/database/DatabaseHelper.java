@@ -32,6 +32,7 @@ public class DatabaseHelper {
 	"		  word_list_id INTEGER," +
 	"		  wordAID INTEGER," +
 	"		  wordBID INTEGER," +
+	"         position INTEGER," +
 	"		  dbVersion INTEGER," +
 	"		PRIMARY KEY(id))";
 
