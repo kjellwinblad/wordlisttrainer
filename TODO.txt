@@ -27,6 +27,8 @@ TODO
 #9. Make it possible to move items in the word list up and down
 #FIXED
 
-10. Make it possible to copy words from one word list to an other word list
+10. Create a export to sound files functionality that export a silent sound in between of the words. 
 
-11. Create a documentation
+11. Make it possible to copy words from one word list to an other word list
+
+12. Create a documentation

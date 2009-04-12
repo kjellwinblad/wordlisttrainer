@@ -32,6 +32,8 @@ import javax.swing.JCheckBox;
 import org.wlt.api.sound.Player;
 import org.wlt.data.Word;
 import org.wlt.export.PlaylistFileExporter;
+import java.awt.Font;
+import java.awt.Color;
 
 
 public class PlaylistExportDialog extends JFrame {
@@ -53,8 +55,6 @@ public class PlaylistExportDialog extends JFrame {
 	private JButton jButton = null;
 
 	private JPanel jPanel2 = null;
-
-	private JCheckBox jCheckBox = null;
 
 	private JButton jButton1 = null;
 	
@@ -223,23 +223,10 @@ public class PlaylistExportDialog extends JFrame {
 	private JPanel getJPanel2() {
 		if (jPanel2 == null) {
 			jPanel2 = new JPanel();
-			jPanel2.setLayout(new FlowLayout());
-			jPanel2.setBorder(BorderFactory.createTitledBorder(null, "Include Language In File Names", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-			jPanel2.add(getJCheckBox(), null);
+			jPanel2.setLayout(new BoxLayout(getJPanel2(), BoxLayout.Y_AXIS));
+			jPanel2.setBorder(BorderFactory.createTitledBorder(null, "Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 		}
 		return jPanel2;
-	}
-
-	/**
-	 * This method initializes jCheckBox	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getJCheckBox() {
-		if (jCheckBox == null) {
-			jCheckBox = new JCheckBox();
-		}
-		return jCheckBox;
 	}
 
 	/**
