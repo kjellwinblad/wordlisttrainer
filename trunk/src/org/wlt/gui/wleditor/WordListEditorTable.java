@@ -143,7 +143,7 @@ public class WordListEditorTable extends JTable {
 	}
 
 	protected void checkForAutomaticAddRow() {
-System.out.println("WHYEDI");
+
 		if(getCellEditor()!=null){
 
 			if(getEditingRow() ==(getRowCount()-1))

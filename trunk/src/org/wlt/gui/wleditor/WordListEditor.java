@@ -79,7 +79,7 @@ public class WordListEditor extends JDialog {
 				propertiesAndListSplitPane.setLeftComponent(editorPanelContainer);
 				
 				
-				wordListEitorTablePanel = new WordListEditorTablePanel(wordList);
+				wordListEitorTablePanel = new WordListEditorTablePanel(wordList, this);
 				
 				propertiesAndListSplitPane.setRightComponent(wordListEitorTablePanel);
 		 }
