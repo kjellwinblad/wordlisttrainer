@@ -5,7 +5,9 @@ package org.wlt.gui.wleditor;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -51,9 +53,11 @@ public class WordListEditorTablePanel extends JPanel {
 	private WordList wordList;
 	WordListEditorTable wordListEditorTable;
 	private JPanel controlPanel;
+	private Dialog parentFrame;
 
-	public WordListEditorTablePanel(WordList wordList) {
+	public WordListEditorTablePanel(WordList wordList, Dialog parentFrame) {
 		this.wordList = wordList;
+		this.parentFrame = parentFrame;
 
 		initialize();
 	}
@@ -223,6 +227,25 @@ JToolBar toolBar = new JToolBar();
 			downButton.setIcon(new ImageIcon(getClass().getResource("/images/1downarrow.png"), "add"));
 
 			toolBar.add(downButton);
+			
+			//ADD copy button
+			
+			JButton copyButton = new JButton();
+
+			copyButton.setToolTipText("Copy selected row(s) to other word list");
+			
+			copyButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					copySelectedRows();
+				}
+			});
+
+			copyButton.setIcon(new ImageIcon(getClass().getResource("/images/editcopy.png"), "add"));
+
+			toolBar.add(copyButton);
+			
+			//END ADD copy button
+			
 
 			JButton openInRecorEditorButton = new JButton(
 					);
@@ -549,6 +572,18 @@ JToolBar toolBar = new JToolBar();
 	private void addWordBinding() {
 		wordListEditorTable.addRow();
 
+	}
+	
+	
+	private void copySelectedRows() {
+		
+		int rows[] = wordListEditorTable.getSelectedRows();
+		
+		if(wordListEditorTable.getSelectedRows().length==0)
+			return;
+		
+		new CopyDialog(parentFrame, wordList, rows).setVisible(true);
+		
 	}
 
 	private void deleteSelectedWordBindings() {

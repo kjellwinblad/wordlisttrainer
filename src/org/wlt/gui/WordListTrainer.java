@@ -26,6 +26,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.wlt.data.WordList;
 import org.wlt.data.database.DatabaseCopier;
@@ -286,6 +289,31 @@ public class WordListTrainer extends JFrame {
 			
 			helpMenu.add(aboutMenuItem);
 			
+			JMenu lookAndFeelMenu = new JMenu("Look and Feel");
+			
+			ButtonGroup lookAndFeelGroup = new ButtonGroup();
+
+			// Create the radio buttons.
+
+			final LookAndFeelInfo[] lookAndFeels = UIManager
+					.getInstalledLookAndFeels();
+
+			for (int n = 0; n < lookAndFeels.length; n++) {
+
+				JRadioButtonMenuItem lookAndFeelItem = new JRadioButtonMenuItem(
+						lookAndFeels[n].getName());
+				lookAndFeelMenu.add(lookAndFeelItem);
+				ThemeChangeListener l = new ThemeChangeListener(lookAndFeels[n]
+						.getClassName(), this);
+				lookAndFeelItem.addActionListener(l);
+
+
+
+				lookAndFeelGroup.add(lookAndFeelItem);
+
+			}
+			helpMenu.add(lookAndFeelMenu);
+			
 			mainMenu.add(helpMenu);
 		}
 		
@@ -309,4 +337,32 @@ public class WordListTrainer extends JFrame {
 
 	}
 
+	
+	public class ThemeChangeListener implements ActionListener {
+
+		private String className;
+
+		private JFrame frame;
+
+		public ThemeChangeListener(String className, WordListTrainer frame) {
+			this.frame = frame;
+			this.className = className;
+
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			try {
+				UIManager.setLookAndFeel(className);
+
+				SwingUtilities.updateComponentTreeUI(frame);
+
+				// frame.pack();
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
 }
