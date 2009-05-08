@@ -11,7 +11,13 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=word_list_trainer/ext_src"/>
+        <file path="/word_list_trainer/TODO.txt"/>
         <javaElement handleIdentifier="=word_list_trainer/src"/>
+        <file path="/word_list_trainer/.classpath"/>
+        <file path="/word_list_trainer/derby.log"/>
+        <javaElement handleIdentifier="=word_list_trainer/ext_src"/>
+        <file path="/word_list_trainer/.project"/>
+        <file path="/word_list_trainer/startNetworkDB.sh"/>
+        <file path="/word_list_trainer/stopNetworkDB.sh"/>
     </selectedElements>
 </jardesc>
