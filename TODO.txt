@@ -5,7 +5,7 @@ TODO
 
 # 2. The Export... button in the sound editor shall be moved to the word list editor and renamed to export selected. 
 # FIXED
-
+kjollol
 # 3. Add an export dialog that shall be displayed when Export... is selected.
 # FIXED
 
