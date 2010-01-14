@@ -18,7 +18,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+
 
 import org.wlt.data.WordBinding;
 import org.wlt.data.WordList;

@@ -1,11 +1,18 @@
 package org.wlt.export;
 
 import java.awt.Component;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioFileFormat.Type;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,9 +29,12 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.wlt.api.sound.Player;
 import org.wlt.data.Word;
 import org.wlt.data.WordBinding;
 import org.wlt.data.WordList;
+
+
 
 import exlib.Base64;
 
@@ -103,8 +113,38 @@ public class XMLFileWordListExporter implements WordListExporter {
 
 	        	if(b.getWordA().getSoundFile()!= null){
 	        	Element word1SoundData = doc.createElement("wordSoundData");
-	        	word1SoundData.setTextContent(Base64.encode(b.getWordA().getSoundFile(), 80)); 
-	        	word1.appendChild(word1SoundData);
+
+	        	InputStream inputStream = new ByteArrayInputStream(b.getWordA().getSoundFile());
+	        	
+
+				AudioFormat format = Player.AUDIO_FORMAT;
+
+				long lLengthInFrames = b.getWordA().getSoundFile().length / format.getFrameSize();
+				javax.sound.sampled.AudioInputStream ais = new javax.sound.sampled.AudioInputStream(inputStream,
+															format,
+															lLengthInFrames);
+
+				
+				
+				int	nWrittenBytes = 0;
+				try
+				{
+					Type targetFileType= AudioFileFormat.Type.WAVE;
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					nWrittenBytes = AudioSystem.write(ais, targetFileType, outputStream);
+					word1SoundData.setTextContent(Base64.encode(outputStream.toByteArray(), 80)); 
+		        	word1.appendChild(word1SoundData);
+					
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+
+			
+
+	        	
+	        	
 	        	}
 	        	
 	        	//word2
@@ -116,9 +156,34 @@ public class XMLFileWordListExporter implements WordListExporter {
 	        	word2.appendChild(word2Text);
 
 	        	if(b.getWordB().getSoundFile()!= null){
-	        	Element word2SoundData = doc.createElement("wordSoundData");
-	        	word2SoundData.setTextContent(Base64.encode(b.getWordB().getSoundFile(), 80)); 
-	        	word2.appendChild(word2SoundData);
+		        	Element word2SoundData = doc.createElement("wordSoundData");
+
+		        	InputStream inputStream = new ByteArrayInputStream(b.getWordB().getSoundFile());
+		        	
+
+					AudioFormat format = Player.AUDIO_FORMAT;
+
+					long lLengthInFrames = b.getWordB().getSoundFile().length / format.getFrameSize();
+					javax.sound.sampled.AudioInputStream ais = new javax.sound.sampled.AudioInputStream(inputStream,
+																format,
+																lLengthInFrames);
+
+					
+					
+					int	nWrittenBytes = 0;
+					try
+					{
+						Type targetFileType= AudioFileFormat.Type.WAVE;
+						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+						nWrittenBytes = AudioSystem.write(ais, targetFileType, outputStream);
+						word2SoundData.setTextContent(Base64.encode(outputStream.toByteArray(), 80)); 
+			        	word2.appendChild(word2SoundData);
+						
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
 	        	}
 	        }
 	        
