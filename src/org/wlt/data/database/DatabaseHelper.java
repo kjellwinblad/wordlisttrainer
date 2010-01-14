@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import org.wlt.settings.DatabaseSettings;
 
-import sun.security.pkcs11.Secmod.DbMode;
+
 
 public class DatabaseHelper {
 

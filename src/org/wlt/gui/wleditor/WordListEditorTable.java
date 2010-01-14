@@ -41,6 +41,7 @@ public class WordListEditorTable extends JTable {
 
 	public WordListEditorTable(WordList wordList) {
 		thisTable = this;
+		
 		this.wordList = wordList;
 		
 		   setColumnSelectionAllowed(true);
@@ -140,10 +141,18 @@ public class WordListEditorTable extends JTable {
 			}
 
 		});
+		addWhenLastSelected=false;
+		
 	}
 
 	protected void checkForAutomaticAddRow() {
 
+		if(addWhenLastSelected==false){
+			addWhenLastSelected=true;
+			return;
+			
+		}
+		
 		if(getCellEditor()!=null){
 
 			if(getEditingRow() ==(getRowCount()-1))
@@ -287,7 +296,9 @@ try{
 		e1.printStackTrace();
 	}
 		updateData();
-		
+		updateUI();
+	
 	}
+	private boolean addWhenLastSelected=true;
 
 }

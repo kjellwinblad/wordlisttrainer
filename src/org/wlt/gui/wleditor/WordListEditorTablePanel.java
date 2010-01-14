@@ -166,7 +166,7 @@ public class WordListEditorTablePanel extends JPanel {
 		JScrollPane wordListEditorTableScrollPane = new JScrollPane(
 				wordListEditorTable);
 
-		wordListEditorTable.setFillsViewportHeight(true);
+		//wordListEditorTable.setFillsViewportHeight(true);
 		wordListEditorTablePanel.add(wordListEditorTableScrollPane,
 				BorderLayout.CENTER);
 

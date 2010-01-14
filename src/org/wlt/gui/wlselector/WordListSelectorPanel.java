@@ -55,7 +55,7 @@ public class WordListSelectorPanel extends JPanel {
 		setLayout(new BorderLayout());
 		JTable table = getWordListTable();
 		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
+		//table.setFillsViewportHeight(true);
 		
 		add(scrollPane, BorderLayout.CENTER);
 		
